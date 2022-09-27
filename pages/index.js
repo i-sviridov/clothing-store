@@ -6,24 +6,11 @@ import { MongoClient } from 'mongodb';
 
 export default function Index(props) {
   const parsedData = JSON.parse(props.data);
-  console.log(parsedData);
 
   return (
     <>
       <Navigation></Navigation>
-      <Main></Main>
-      {parsedData.map((element) => (
-        <>
-          <p>{element.title}</p>
-          <img className="test" src={element.imageUrl} />
-          <p>{element.price}</p>
-          <p>{element.description}</p>
-          <p>{element.color}</p>
-          {element.sizes.map((size) => {
-            return <p>{size}</p>;
-          })}
-        </>
-      ))}
+      <Main data={parsedData}></Main>
     </>
   );
 }
