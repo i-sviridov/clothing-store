@@ -3,17 +3,28 @@ import classes from './products.module.css';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/system/Box';
-
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
-function Products(props) {
+import Link from '../../Link';
+
+export default function Products(props) {
   return (
     <Box sx={{ m: 5 }}>
       <Grid container spacing={3}>
         {props.data.map((element) => (
-          <Grid container item xs={12} sm={6} md={3}>
+          <Grid
+            key={element._id}
+            container
+            item
+            xs={12}
+            sm={6}
+            md={3}
+            component={Link}
+            href={element._id}
+            sx={{ textDecoration: 'none', color: 'inherit' }}
+          >
             <Box className={classes.container}>
               <Box className={classes.svgbox}>
                 <SearchIcon className={classes.svgitem} />
@@ -40,5 +51,3 @@ function Products(props) {
     </Box>
   );
 }
-
-export default Products;

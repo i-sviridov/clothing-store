@@ -1,14 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Products from './products/products';
 
-const DUMMY_PRODUCTS = [
-  {
-    id: '1',
-    title: 'first product',
-  },
-];
-
-function Main(props) {
+export default function Main(props) {
   return (
     <>
       <Typography
@@ -23,5 +16,3 @@ function Main(props) {
     </>
   );
 }
-
-export default Main;
