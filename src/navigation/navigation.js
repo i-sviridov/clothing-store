@@ -11,9 +11,12 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import Link from '../Link';
 import { BreakpointsContext } from '../../context/breakpoints-context';
+import { FavoritesContext } from '../../context/favorites-context';
 
 export default function Navigation() {
   const ctx = useContext(BreakpointsContext);
+  const fvCtx = useContext(FavoritesContext);
+  console.log(fvCtx);
 
   return (
     <Box>
@@ -37,6 +40,7 @@ export default function Navigation() {
             <>
               <Button component={Link} href="" color="inherit">
                 Wishlist
+                <span>{fvCtx.favoritesAmount}</span>
               </Button>
               <Button component={Link} href="" color="inherit">
                 Login

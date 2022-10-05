@@ -1,25 +1,138 @@
-.image {
+.product-title {
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.product-container {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.product-image {
   background-color: rgb(232, 233, 229);
+  width: 80%;
   border-radius: 1rem;
-  width: 100%;
+  margin: 0 auto;
 }
 
-.select {
+.product-description {
+  margin-top: 2rem;
+  text-align: justify;
+  padding: 0 2rem;
+}
+
+.product-price {
+  text-align: center;
+  font-weight: bold;
+}
+
+.product-color,
+.product-sizes,
+.product-cart {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 2rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.product-color,
+.product-sizes > p {
+  font-weight: bold;
+}
+
+.product-color-items {
+  display: flex;
+  justify-content: space-around;
+}
+
+.product-color-item {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 1rem;
+  margin: 0 0.5rem;
+}
+
+.product-select {
   padding: 10px;
-  margin-right: 20px;
-  height: 3rem;
 }
 
-.button {
+.product-amount {
+  display: flex;
+}
+
+.product-amount button {
   all: initial;
   color: black;
   font-size: 2rem;
   margin: 0 0.5rem;
 }
 
-.amount {
+.product-amount p {
   border: 1px solid black;
   padding: 10px;
   height: 3rem;
   border-radius: 10px;
+}
+
+@media (min-width: 530px) {
+  .product-container {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: 250px 250px;
+    grid-template-rows: 1fr repeat(5, 0.3fr);
+  }
+
+  .product-image {
+    align-self: center;
+  }
+
+  .product-description {
+    margin-top: 2rem;
+    text-align: justify;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (min-width: 820px) {
+  .product-container {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: 400px 400px;
+    grid-template-rows: 1fr repeat(5, 0.3fr);
+  }
+
+  .product-image {
+    align-self: center;
+  }
+
+  .product-description {
+    margin-top: 2rem;
+    text-align: justify;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-container {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: 600px 600px;
+    grid-template-rows: 1fr repeat(5, 0.3fr);
+  }
+
+  .product-image {
+    grid-row: 1 / 5;
+    align-self: center;
+  }
+
+  .product-description {
+    margin-top: 2rem;
+    text-align: justify;
+    padding: 0 0.5rem;
+    align-self: center;
+  }
 }

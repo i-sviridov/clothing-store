@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/system/Box';
 import SearchIcon from '@mui/icons-material/Search';
+import FavoritesItemIcon from '../favorites-item-icon';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
@@ -26,11 +27,6 @@ export default function Products(props) {
             sx={{ textDecoration: 'none', color: 'inherit' }}
           >
             <Box className={classes.container}>
-              <Box className={classes.svgbox}>
-                <SearchIcon className={classes.svgitem} />
-                <FavoriteBorderIcon className={classes.svgitem} />
-                <AddShoppingCartIcon className={classes.svgitem} />
-              </Box>
               <Grid item xs={12} mt={2}>
                 <Typography align="center" variant="h6">
                   {element.title}

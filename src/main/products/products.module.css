@@ -38,13 +38,14 @@
   z-index: 3;
 }
 
-.svgitem {
+.svg-item {
+  z-index: 10;
   width: 100%;
   margin-bottom: 1rem;
   font-size: 2rem;
 }
 
-.svgitem:hover {
+.svg-item:hover {
   color: red;
 }
 

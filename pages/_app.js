@@ -7,6 +7,7 @@ import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { BreakpointsContextProvider } from '../context/breakpoints-context';
+import { FavoritesContextProvider } from '../context/favorites-context';
 import '../styles.css';
 const clientSideEmotionCache = createEmotionCache();
 
@@ -21,7 +22,9 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BreakpointsContextProvider>
-          <Component {...pageProps} />
+          <FavoritesContextProvider>
+            <Component {...pageProps} />
+          </FavoritesContextProvider>
         </BreakpointsContextProvider>
       </ThemeProvider>
     </CacheProvider>
