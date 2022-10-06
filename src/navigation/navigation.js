@@ -16,7 +16,6 @@ import { FavoritesContext } from '../../context/favorites-context';
 export default function Navigation() {
   const ctx = useContext(BreakpointsContext);
   const fvCtx = useContext(FavoritesContext);
-  console.log(fvCtx);
 
   return (
     <Box>
@@ -40,7 +39,7 @@ export default function Navigation() {
             <>
               <Button component={Link} href="" color="inherit">
                 Wishlist
-                <span>{fvCtx.favoritesAmount}</span>
+                <span>{fvCtx.amount}</span>
               </Button>
               <Button component={Link} href="" color="inherit">
                 Login

@@ -1,15 +1,95 @@
 import classes from './single-product.module.css';
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import { useContext } from 'react';
+import { useContext, useReducer } from 'react';
 import { FavoritesContext } from '../../../../context/favorites-context';
 
 export default function singleProduct(props) {
-  console.log(props);
   const ctx = useContext(FavoritesContext);
+
+  const defaultProductOptions = {
+    color: props.data.colors[0],
+    size: props.data.sizes[0],
+    totalPrice: +props.data.price,
+    selectedAmount: 1,
+  };
+
+  function productOptionsReducer(state, action) {
+    if (action.type === 'COLOR') {
+      return {
+        ...state,
+        color: action.color,
+      };
+    }
+
+    if (action.type === 'SIZE') {
+      return {
+        ...state,
+        size: action.size,
+      };
+    }
+
+    if (action.type === 'DECREASE_AMOUNT') {
+      if (state.selectedAmount === 1) {
+        return state;
+      }
+      return {
+        ...state,
+        selectedAmount: state.selectedAmount - 1,
+        totalPrice: (state.selectedAmount - 1) * +props.data.price,
+      };
+    }
+
+    if (action.type === 'INCREASE_AMOUNT') {
+      if (state.selectedAmount >= 10) {
+        return state;
+      }
+      return {
+        ...state,
+        selectedAmount: state.selectedAmount + 1,
+        totalPrice: (state.selectedAmount + 1) * +props.data.price,
+      };
+    }
+
+    if (action.type === 'ADD_TO_CART') {
+      return defaultProductOptions;
+    }
+
+    return defaultProductOptions;
+  }
+
+  const [productOptions, dispatchOptionsAction] = useReducer(
+    productOptionsReducer,
+    defaultProductOptions
+  );
+
+  let isFavorite = ctx.items.includes(props.data._id);
+
+  function favoritesHandler() {
+    if (!isFavorite) {
+      ctx.addItem(props.data._id);
+    }
+    if (isFavorite) {
+      ctx.deleteItem(props.data._id);
+    }
+  }
+
+  function colorOptionPickHandler(color) {
+    dispatchOptionsAction({ type: 'COLOR', color });
+  }
+
+  function sizeOptionPickHandler(event) {
+    dispatchOptionsAction({ type: 'SIZE', size: event.target.value });
+  }
+
+  function changeAmountHandler(type) {
+    dispatchOptionsAction({ type });
+  }
+
+  function addToCartHandler() {
+    console.log(productOptions);
+    dispatchOptionsAction({ type: 'ADD_TO_CART' });
+  }
+
   return (
     <>
       <h1 className={classes['product-title']}>{props.data.title}</h1>
@@ -21,11 +101,15 @@ export default function singleProduct(props) {
 
         <div className={classes['product-color']}>
           <p>Color</p>
-          <div className={classes['product-color-items']}>
+          <div className={classes[`product-color-items`]}>
             {props.data.colors.map((color) => (
               <div
-                className={classes['product-color-item']}
+                className={`${classes['product-color-item']} ${
+                  color === productOptions.color ? classes['active'] : ''
+                }`}
                 style={{ backgroundColor: color }}
+                key={color}
+                onClick={colorOptionPickHandler.bind(null, color)}
               />
             ))}
           </div>
@@ -33,177 +117,50 @@ export default function singleProduct(props) {
 
         <div className={classes['product-sizes']}>
           <p>Sizes</p>
-          <select className={classes['product-select']}>
+          <select
+            id="sizes"
+            className={classes['product-select']}
+            onClick={sizeOptionPickHandler}
+          >
             {props.data.sizes.map((size) => {
-              return <option>{size}</option>;
+              return (
+                <option key={size} htmlFor="sizes" value={size}>
+                  {size}
+                </option>
+              );
             })}
           </select>
         </div>
         <div className={classes['product-cart']}>
           <p className={classes['product-price']}>
-            {+props.data.price + '.00 $'}
+            {productOptions.totalPrice + '.00$'}
           </p>
           <div className={classes['product-amount']}>
-            <button>-</button>
-            <p>1</p>
-            <button>+</button>
+            <button onClick={changeAmountHandler.bind(null, 'DECREASE_AMOUNT')}>
+              -
+            </button>
+            <p>{productOptions.selectedAmount}</p>
+            <button onClick={changeAmountHandler.bind(null, 'INCREASE_AMOUNT')}>
+              +
+            </button>
           </div>
         </div>
-
-        <button>Add to cart</button>
-        <button onClick={ctx.addItem}>Mark as favorites</button>
-        <button>Back</button>
+        <div className={classes['product-buttons']}>
+          <button
+            className={classes['product-button']}
+            onClick={addToCartHandler}
+          >
+            Add to cart
+          </button>
+          <button
+            className={classes['product-button']}
+            onClick={favoritesHandler}
+          >
+            {isFavorite ? 'Unmark as favorite' : 'Mark as favorite'}
+          </button>
+          <button className={classes['product-button']}>Back</button>
+        </div>
       </div>
     </>
-
-    // <Grid container mt={5}>
-    //   <Grid
-    //     container
-    //     item
-    //     xs={12}
-    //     lg={5}
-    //     px={{ xs: '3rem', sm: '10rem', md: '15rem', lg: '0rem' }}
-    //     pl={{ lg: '2rem' }}
-    //   >
-    //     <img src={props.data.imageUrl} className={classes.image} />
-    //   </Grid>
-    //   <Grid item container xs={12} lg={7} px={5} mt={{ xs: '5rem', lg: '0' }}>
-    //     <Grid item xs={12}>
-    //       <Typography
-    //         variant="h4"
-    //         align="center"
-    //         sx={{
-    //           fontSize: { xs: '1.3rem', sm: '1.5rem', lg: '1.8rem' },
-    //         }}
-    //       >
-    //         {props.data.title}
-    //       </Typography>
-    //     </Grid>
-    //     <Grid item xs={12} mt={{ xs: '5rem', lg: '0' }}>
-    //       <Typography
-    //         variant="h5"
-    //         align="center"
-    //         sx={{
-    //           fontSize: { xs: '1.2rem', sm: '1.3rem', lg: '1.5rem' },
-    //         }}
-    //       >
-    //         {props.data.description}
-    //       </Typography>
-    //     </Grid>
-    //     <Grid item xs={12} mt={{ xs: '5rem', lg: '0' }}>
-    //       <Typography
-    //         variant="h4"
-    //         align="center"
-    //         sx={{
-    //           fontSize: { xs: '1.3rem', sm: '1.5rem', lg: '1.8rem' },
-    //         }}
-    //       >
-    //         {+props.data.price + '.00 $'}
-    //       </Typography>
-    //     </Grid>
-    //     <Grid
-    //       container
-    //       item
-    //       md={12}
-    //       justifyContent="center"
-    //       alignItems="center"
-    //       mt={{ xs: '5rem', lg: '0' }}
-    //     >
-    //       <Grid
-    //         item
-    //         container
-    //         xs={12}
-    //         md={6}
-    //         justifyContent="center"
-    //         alignItems="center"
-    //       >
-    //         <Typography
-    //           variant="h4"
-    //           align="center"
-    //           sx={{
-    //             fontSize: { xs: '1.3rem', sm: '1.5rem', lg: '1.8rem' },
-    //           }}
-    //         >
-    //           {'Color '}
-    //         </Typography>
-    //         {props.data.colors.map((color) => (
-    //           <Box
-    //             sx={{
-    //               width: { xs: '1.5rem ', lg: '2rem' },
-    //               height: { xs: '1.5rem ', lg: '2rem' },
-    //               borderRadius: '1rem',
-    //               marginX: { xs: '0.5rem ', lg: '1rem' },
-    //               backgroundColor: color,
-    //             }}
-    //           />
-    //         ))}
-    //       </Grid>
-    //       <Grid
-    //         item
-    //         container
-    //         xs={12}
-    //         md={6}
-    //         justifyContent="center"
-    //         alignItems="center"
-    //         mt={{ xs: '5rem', md: '0' }}
-    //       >
-    //         <Typography
-    //           variant="h4"
-    //           align="center"
-    //           sx={{
-    //             fontSize: { xs: '1.3rem', sm: '1.5rem', lg: '1.8rem' },
-    //           }}
-    //         >
-    //           {'Sizes '}
-    //         </Typography>
-
-    //         <Box
-    //           sx={{ p: '10px', fontSize: '1.2rem', mx: 3 }}
-    //           component="select"
-    //         >
-    //           {props.data.sizes.map((size) => {
-    //             return <option>{size}</option>;
-    //           })}
-    //         </Box>
-    //       </Grid>
-    //     </Grid>
-    //     <Grid
-    //       container
-    //       item
-    //       sx={12}
-    //       justifyContent="center"
-    //       alignItems="center"
-    //       mt={{ xs: '5rem', lg: '0' }}
-    //       mb={5}
-    //     >
-    //       <Grid
-    //         item
-    //         xs={6}
-    //         container
-    //         justifyContent="center"
-    //         alignItems="center"
-    //       >
-    //         <button className={classes.button}>-</button>
-    //         <div className={classes.amount}>1</div>
-    //         <button className={classes.button}>+</button>
-    //       </Grid>
-    //       <Grid item xs={6} container justifyContent="center">
-    //         <Button
-    //           variant="contained"
-    //           sx={{ color: 'black', borderColor: 'black' }}
-    //         >
-    //           Add to cart
-    //         </Button>
-    //         <Button
-    //           onClick={ctx.addItem}
-    //           variant="contained"
-    //           sx={{ color: 'black', borderColor: 'black' }}
-    //         >
-    //           Add to favorites
-    //         </Button>
-    //       </Grid>
-    //     </Grid>
-    //   </Grid>
-    // </Grid>
   );
 }

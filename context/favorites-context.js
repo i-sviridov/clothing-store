@@ -3,21 +3,28 @@ import { useReducer } from 'react';
 
 export const FavoritesContext = React.createContext({
   items: [],
-  favoritesAmount: 0,
-  addItem: (item) => {},
+  amount: 0,
+  addItem: (id) => {},
   deleteItem: (id) => {},
 });
 
 const defaultFavoritesState = {
   items: [],
-  favoritesAmount: 0,
+  amount: 0,
 };
 
 function favoritesReducer(state, action) {
   if (action.type === 'ADD') {
+    return { items: state.items.concat(action.id), amount: state.amount + 1 };
+  }
+
+  if (action.type === 'DELETE') {
+    const index = state.items.indexOf(action.id);
+    const updatedArray = state.items.splice(index, 1);
+
     return {
-      items: [],
-      favoritesAmount: state.favoritesAmount + 1,
+      items: updatedArray,
+      amount: state.amount - 1,
     };
   }
 
@@ -30,8 +37,8 @@ export function FavoritesContextProvider(props) {
     defaultFavoritesState
   );
 
-  function addItemToFavorites(item) {
-    dipsatchFavoritesAction({ type: 'ADD', item: item });
+  function addItemToFavorites(id) {
+    dipsatchFavoritesAction({ type: 'ADD', id: id });
   }
 
   function deleteItemFromFavorites(id) {
@@ -40,7 +47,7 @@ export function FavoritesContextProvider(props) {
 
   const context = {
     items: favoritesState.items,
-    favoritesAmount: favoritesState.favoritesAmount,
+    amount: favoritesState.amount,
     addItem: addItemToFavorites,
     deleteItem: deleteItemFromFavorites,
   };
