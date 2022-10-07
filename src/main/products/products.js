@@ -3,10 +3,6 @@ import classes from './products.module.css';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/system/Box';
-import SearchIcon from '@mui/icons-material/Search';
-import FavoritesItemIcon from '../favorites-item-icon';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 import Link from '../../Link';
 

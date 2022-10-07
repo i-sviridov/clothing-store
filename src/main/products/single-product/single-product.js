@@ -2,6 +2,7 @@ import classes from './single-product.module.css';
 
 import { useContext, useReducer } from 'react';
 import { FavoritesContext } from '../../../../context/favorites-context';
+import Link from 'next/link';
 
 export default function singleProduct(props) {
   const ctx = useContext(FavoritesContext);
@@ -158,7 +159,9 @@ export default function singleProduct(props) {
           >
             {isFavorite ? 'Unmark as favorite' : 'Mark as favorite'}
           </button>
-          <button className={classes['product-button']}>Back</button>
+          <Link href="/">
+            <button className={classes['product-button']}>Return</button>
+          </Link>
         </div>
       </div>
     </>
