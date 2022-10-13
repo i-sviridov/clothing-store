@@ -6,6 +6,7 @@ export const FavoritesContext = React.createContext({
   amount: 0,
   addItem: (id) => {},
   deleteItem: (id) => {},
+  fetchCookiesData: (items, amount) => {},
 });
 
 const defaultFavoritesState = {
@@ -16,6 +17,9 @@ const defaultFavoritesState = {
 function favoritesReducer(state, action) {
   if (action.type === 'ADD') {
     document.cookie = `${action.id}=${action.id}`;
+    if (state.items.includes(action.id)) {
+      return state;
+    }
     return { items: state.items.concat(action.id), amount: state.amount + 1 };
   }
 
@@ -30,6 +34,13 @@ function favoritesReducer(state, action) {
     };
   }
 
+  if (action.type === 'COOKIES_AMOUNT') {
+    console.log(action, state);
+    return {
+      items: action.items,
+      amount: action.amount,
+    };
+  }
   return defaultFavoritesState;
 }
 
@@ -40,11 +51,19 @@ export function FavoritesContextProvider(props) {
   );
 
   function addItemToFavorites(id) {
-    dipsatchFavoritesAction({ type: 'ADD', id: id });
+    dipsatchFavoritesAction({ type: 'ADD', id });
   }
 
   function deleteItemFromFavorites(id) {
-    dipsatchFavoritesAction({ type: 'DELETE', id: id });
+    dipsatchFavoritesAction({ type: 'DELETE', id });
+  }
+
+  function fetchFromCookies(items, amount) {
+    dipsatchFavoritesAction({
+      type: 'COOKIES_AMOUNT',
+      items,
+      amount,
+    });
   }
 
   const context = {
@@ -52,6 +71,7 @@ export function FavoritesContextProvider(props) {
     amount: favoritesState.amount,
     addItem: addItemToFavorites,
     deleteItem: deleteItemFromFavorites,
+    fetchCookiesData: fetchFromCookies,
   };
 
   return (

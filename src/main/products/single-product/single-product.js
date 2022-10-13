@@ -1,11 +1,17 @@
 import classes from './single-product.module.css';
 
-import { useContext, useReducer } from 'react';
+import { useContext, useReducer, useEffect } from 'react';
 import { FavoritesContext } from '../../../../context/favorites-context';
 import Link from 'next/link';
 
 export default function singleProduct(props) {
   const ctx = useContext(FavoritesContext);
+
+  useEffect(() => {
+    if (props.isFavorite) {
+      ctx.addItem(props.data._id);
+    }
+  }, [props.isFavorite]);
 
   const defaultProductOptions = {
     color: props.data.colors[0],
@@ -64,6 +70,9 @@ export default function singleProduct(props) {
   );
 
   let isFavorite = ctx.items.includes(props.data._id);
+
+  console.log(isFavorite);
+  console.log(ctx.items);
 
   function favoritesHandler() {
     if (!isFavorite) {

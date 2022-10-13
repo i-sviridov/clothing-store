@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Main from '../src/main/main';
-import Navigation from '../src/navigation/navigation';
 
 import { MongoClient } from 'mongodb';
 
@@ -9,7 +8,6 @@ export default function Index(props) {
 
   return (
     <>
-      <Navigation></Navigation>
       <Main data={parsedData}></Main>
     </>
   );

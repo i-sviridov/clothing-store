@@ -1,21 +1,29 @@
 const mongodb = require('mongodb');
 import { MongoClient } from 'mongodb';
-import Navigation from '../src/navigation/navigation';
 import SingleProduct from '../src/main/products/single-product/single-product';
 
 export default function ProductItem(props) {
   const parsedData = JSON.parse(props.data);
+
   return (
     <>
-      <Navigation />
-      <SingleProduct data={parsedData} />
+      <SingleProduct data={parsedData} isFavorite={props.isFavorite} />
     </>
   );
 }
 
 export async function getServerSideProps(context) {
-  const { params } = context;
+  const params = context.params;
+  const cookies = context.req.headers.cookie;
+
+  let cookiesData = '';
+  if (cookies) {
+    cookiesData = cookies.split('=')[0].toString();
+  }
+
   const productId = params.productItem;
+
+  const isFavorite = cookiesData === productId;
 
   async function fetchData() {
     const client = await MongoClient.connect(
@@ -32,6 +40,6 @@ export async function getServerSideProps(context) {
 
   const data = await fetchData();
   return {
-    props: { data: JSON.stringify(data) },
+    props: { data: JSON.stringify(data), isFavorite },
   };
 }
