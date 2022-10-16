@@ -9,8 +9,8 @@ import Link from '../../Link';
 import ProductsFilter from './products-filter/product-filter';
 
 export default function Products(props) {
-  const defaultPageContent = { content: props.data };
-  const [pageContent, dispatchPageContentAction] = useReducer(
+  const defaultPageContent = { content: props.data, category: 'all-products' };
+  const [categoryFilter, dispatchCategoryFilterAction] = useReducer(
     pageContentReducer,
     defaultPageContent
   );
@@ -21,20 +21,24 @@ export default function Products(props) {
         content: props.data.filter((item) => {
           return item.category === action;
         }),
+        category: action,
       };
     } else return defaultPageContent;
   }
 
   function optionPickHandler(event) {
-    dispatchPageContentAction(event.target.value);
+    dispatchCategoryFilterAction(event.target.value);
   }
 
   return (
     <Box sx={{ m: 5 }}>
-      <ProductsFilter onClick={optionPickHandler} />
+      <ProductsFilter
+        onClick={optionPickHandler}
+        activeFilter={categoryFilter}
+      />
 
       <Grid container spacing={3} justifyContent="center">
-        {pageContent.content.map((element) => (
+        {categoryFilter.content.map((element) => (
           <Grid
             key={element._id}
             container

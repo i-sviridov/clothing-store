@@ -8,13 +8,13 @@ import Select from '@mui/material/Select';
 export default function ProductsFilter(props) {
   return (
     <FormControl sx={{ width: { xs: '100%', sm: '10rem' }, my: 5 }}>
-      <InputLabel id="select-label" variant="filled">
-        Category
+      <InputLabel id="select-label" sx={{ height: '10rem' }}>
+        Filter
       </InputLabel>
       <Select
         labelId="select-label"
         id="demo-simple-select"
-        value="all"
+        value={props.activeFilter.category}
         label="Age"
         defaultValue={20}
         onChange={props.onClick}
