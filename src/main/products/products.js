@@ -1,16 +1,40 @@
 import classes from './products.module.css';
+import { useReducer } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/system/Box';
 
 import Link from '../../Link';
+import ProductsFilter from './products-filter/product-filter';
 
 export default function Products(props) {
+  const defaultPageContent = { content: props.data };
+  const [pageContent, dispatchPageContentAction] = useReducer(
+    pageContentReducer,
+    defaultPageContent
+  );
+
+  function pageContentReducer(state, action) {
+    if (action !== 'all-products') {
+      return {
+        content: props.data.filter((item) => {
+          return item.category === action;
+        }),
+      };
+    } else return defaultPageContent;
+  }
+
+  function optionPickHandler(event) {
+    dispatchPageContentAction(event.target.value);
+  }
+
   return (
     <Box sx={{ m: 5 }}>
-      <Grid container spacing={3}>
-        {props.data.map((element) => (
+      <ProductsFilter onClick={optionPickHandler} />
+
+      <Grid container spacing={3} justifyContent="center">
+        {pageContent.content.map((element) => (
           <Grid
             key={element._id}
             container

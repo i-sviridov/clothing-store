@@ -12,7 +12,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from '../Link';
 import { BreakpointsContext } from '../../context/breakpoints-context';
 import { FavoritesContext } from '../../context/favorites-context';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function Navigation() {
   const ctx = useContext(BreakpointsContext);
@@ -26,7 +26,6 @@ export default function Navigation() {
       if (document.cookie.length > 0) {
         fvCtx.fetchCookiesData(items, amount);
       }
-      console.log(fvCtx.items, fvCtx.amount);
     }, [document.cookie]);
   }
 

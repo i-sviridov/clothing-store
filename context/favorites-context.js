@@ -35,7 +35,6 @@ function favoritesReducer(state, action) {
   }
 
   if (action.type === 'COOKIES_AMOUNT') {
-    console.log(action, state);
     return {
       items: action.items,
       amount: action.amount,

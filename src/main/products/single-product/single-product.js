@@ -71,9 +71,6 @@ export default function singleProduct(props) {
 
   let isFavorite = ctx.items.includes(props.data._id);
 
-  console.log(isFavorite);
-  console.log(ctx.items);
-
   function favoritesHandler() {
     if (!isFavorite) {
       ctx.addItem(props.data._id);
