@@ -154,19 +154,21 @@ export default function singleProduct(props) {
         </div>
         <div className={classes['product-buttons']}>
           <button
-            className={classes['product-button']}
+            className={`button ${classes['product-button']}`}
             onClick={addToCartHandler}
           >
             Add to cart
           </button>
           <button
-            className={classes['product-button']}
+            className={`button ${classes['product-button']}`}
             onClick={favoritesHandler}
           >
             {isFavorite ? 'Unmark as favorite' : 'Mark as favorite'}
           </button>
           <Link href="/">
-            <button className={classes['product-button']}>Return</button>
+            <button className={`button ${classes['product-button']}`}>
+              Main page
+            </button>
           </Link>
         </div>
       </div>

@@ -1,0 +1,20 @@
+.button {
+  all: initial;
+  width: 9rem;
+  height: 3rem;
+  border-radius: 1rem;
+  text-align: center;
+  color: white;
+  background-color: #acb7e6;
+  margin: 0.5rem 0;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: #444a66a1;
+}
+
+.center-block-element {
+  display: block;
+  margin: 0 auto;
+}

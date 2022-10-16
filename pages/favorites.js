@@ -1,5 +1,6 @@
-import * as React from 'react';
 import Main from '../src/main/main';
+import Link from '../src/Link';
+import Box from '@mui/material/Box';
 
 import { MongoClient } from 'mongodb';
 const mongodb = require('mongodb');
@@ -10,6 +11,10 @@ export default function Index(props) {
   return (
     <>
       <Main data={parsedData}></Main>
+
+      <Box component={Link} href="/" sx={{ textDecoration: 'none' }}>
+        <button className={`button center-block-element`}>Main page</button>
+      </Box>
     </>
   );
 }

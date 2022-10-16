@@ -82,21 +82,6 @@
   border-radius: 10px;
 }
 
-.product-button {
-  all: initial;
-  width: 9rem;
-  height: 3rem;
-  border-radius: 1rem;
-  text-align: center;
-  color: white;
-  background-color: #acb7e6;
-}
-
-.product-button:hover {
-  cursor: pointer;
-  background-color: #444a66a1;
-}
-
 .product-buttons {
   display: flex;
   flex-direction: column;
