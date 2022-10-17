@@ -70,7 +70,15 @@ export default function Products(props) {
   }
 
   return (
-    <Box sx={{ m: 5 }}>
+    <Box
+      sx={{
+        p: 2,
+        m: 3,
+        backgroundColor: '#ecf6fb',
+        border: '1px solid white',
+        borderRadius: '10px',
+      }}
+    >
       <Grid container justifyContent="space-between" item xs={12}>
         <ProductsFilter
           filterData={categoryFilterData}

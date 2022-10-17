@@ -155,8 +155,8 @@ export default function Navigation() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1 }} component="navigation">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography
             variant="h6"
@@ -166,7 +166,12 @@ export default function Navigation() {
           >
             Clothing Store
           </Typography>
-          <Search>
+          <Search
+            sx={{
+              backgroundColor: 'white',
+              '&:hover': { backgroundColor: 'white', border: '1px solid red' },
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

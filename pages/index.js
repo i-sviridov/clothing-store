@@ -1,15 +1,18 @@
 import * as React from 'react';
-import Products from '../src/products/products';
 
 import { MongoClient } from 'mongodb';
+
+import Products from '../src/products/products';
+import WelcomePart from '../src/welcome-part/welcome-part';
 
 export default function Index(props) {
   const parsedData = JSON.parse(props.data);
 
   return (
-    <>
+    <main>
+      <WelcomePart />
       <Products data={parsedData}></Products>
-    </>
+    </main>
   );
 }
 

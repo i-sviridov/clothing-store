@@ -1,7 +1,7 @@
 .container {
   position: relative;
   cursor: pointer;
-  background-color: rgb(235, 244, 247);
+  background-color: #fff;
   border-radius: 1rem;
 }
 
