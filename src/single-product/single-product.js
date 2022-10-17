@@ -1,7 +1,7 @@
 import classes from './single-product.module.css';
 
 import { useContext, useReducer, useEffect } from 'react';
-import { FavoritesContext } from '../../../../context/favorites-context';
+import { FavoritesContext } from '../../context/favorites-context';
 import Link from 'next/link';
 
 export default function singleProduct(props) {
@@ -167,7 +167,7 @@ export default function singleProduct(props) {
           </button>
           <Link href="/">
             <button className={`button ${classes['product-button']}`}>
-              Main page
+              Back to main page
             </button>
           </Link>
         </div>

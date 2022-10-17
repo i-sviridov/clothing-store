@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
 import { MongoClient } from 'mongodb';
-import SingleProduct from '../src/main/products/single-product/single-product';
+import SingleProduct from '../src/single-product/single-product';
 
 export default function ProductItem(props) {
   const parsedData = JSON.parse(props.data);

@@ -1,19 +1,37 @@
-import Main from '../src/main/main';
+import Products from '../src/products/products';
 import Link from '../src/Link';
 import Box from '@mui/material/Box';
 
+import { useState, useEffect } from 'react';
+
 import { MongoClient } from 'mongodb';
+import Typography from '@mui/material/Typography';
 const mongodb = require('mongodb');
 
 export default function Index(props) {
+  const [hasFavoritesData, setHasFavoritesData] = useState(true);
+
   const parsedData = JSON.parse(props.data);
+
+  useEffect(() => {
+    if (parsedData.length === 0) {
+      setHasFavoritesData(false);
+    }
+  }, [parsedData]);
 
   return (
     <>
-      <Main data={parsedData}></Main>
+      <Products data={parsedData}></Products>
+      {!hasFavoritesData && (
+        <Typography textAlign="center" variant="h4" sx={{ my: 3 }}>
+          You have no favorites items yet. Try to add some!
+        </Typography>
+      )}
 
       <Box component={Link} href="/" sx={{ textDecoration: 'none' }}>
-        <button className={`button center-block-element`}>Main page</button>
+        <button className={`button center-block-element`}>
+          Back to main page
+        </button>
       </Box>
     </>
   );

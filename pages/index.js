@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Main from '../src/main/main';
+import Products from '../src/products/products';
 
 import { MongoClient } from 'mongodb';
 
@@ -8,7 +8,7 @@ export default function Index(props) {
 
   return (
     <>
-      <Main data={parsedData}></Main>
+      <Products data={parsedData}></Products>
     </>
   );
 }
