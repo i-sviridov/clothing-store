@@ -12,6 +12,7 @@ export default function ProductsFilter(props) {
         width: { xs: '100%', sm: '10rem', lg: '15rem' },
         my: { xs: 1, sm: 5 },
       }}
+      color="secondary"
     >
       <InputLabel id={props.filterData.inputLabelId} sx={{ height: '10rem' }}>
         {props.filterData.inputLabel}

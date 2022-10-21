@@ -4,11 +4,12 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../src/theme';
-import createEmotionCache from '../src/createEmotionCache';
+import theme from '../components/theme';
+import createEmotionCache from '../components/createEmotionCache';
 import { FavoritesContextProvider } from '../context/favorites-context';
 import '../styles.css';
-import Navigation from '../src/navigation/navigation';
+import Navigation from '../components/navigation/navigation';
+import { AuthContextProvider } from '../context/auth-context';
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
@@ -21,10 +22,12 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <FavoritesContextProvider>
-          <Navigation />
-          <Component {...pageProps} />
-        </FavoritesContextProvider>
+        <AuthContextProvider>
+          <FavoritesContextProvider>
+            <Navigation />
+            <Component {...pageProps} />
+          </FavoritesContextProvider>
+        </AuthContextProvider>
       </ThemeProvider>
     </CacheProvider>
   );

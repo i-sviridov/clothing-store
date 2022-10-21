@@ -169,7 +169,10 @@ export default function Navigation() {
           <Search
             sx={{
               backgroundColor: 'white',
-              '&:hover': { backgroundColor: 'white', border: '1px solid red' },
+              '&:hover': {
+                backgroundColor: 'white',
+                border: '1px solid black',
+              },
             }}
           >
             <SearchIconWrapper>

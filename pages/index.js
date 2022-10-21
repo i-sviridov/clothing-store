@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { MongoClient } from 'mongodb';
-
-import Products from '../src/products/products';
-import WelcomePart from '../src/welcome-part/welcome-part';
+import Products from '../components/products/products';
+import WelcomePart from '../components/welcome-part/welcome-part';
+import { connectToDatabase } from '../lib/auth';
 
 export default function Index(props) {
   const parsedData = JSON.parse(props.data);
@@ -18,9 +17,7 @@ export default function Index(props) {
 
 export async function getServerSideProps() {
   async function fetchData() {
-    const client = await MongoClient.connect(
-      'mongodb+srv://Develop_user:Develop_pass@cluster0.iyq4vsj.mongodb.net/test'
-    );
+    const client = await connectToDatabase();
     const database = client.db('clothing-store');
     const collection = database.collection('items');
     const data = await collection.find().toArray();

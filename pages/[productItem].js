@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
-import { MongoClient } from 'mongodb';
-import SingleProduct from '../src/single-product/single-product';
+import { connectToDatabase } from '../lib/auth';
+import SingleProduct from '../components/single-product/single-product';
 
 export default function ProductItem(props) {
   const parsedData = JSON.parse(props.data);
@@ -26,9 +26,7 @@ export async function getServerSideProps(context) {
   const isFavorite = cookiesData === productId;
 
   async function fetchData() {
-    const client = await MongoClient.connect(
-      'mongodb+srv://Develop_user:Develop_pass@cluster0.iyq4vsj.mongodb.net/test'
-    );
+    const client = await connectToDatabase();
     const database = client.db('clothing-store');
     const collection = database.collection('items');
     const data = await collection.findOne({

@@ -1,11 +1,11 @@
-import Products from '../src/products/products';
-import Link from '../src/Link';
+import Products from '../components/products/products';
+import Link from '../components/Link';
 import Box from '@mui/material/Box';
 
 import { useState, useEffect } from 'react';
 
-import { MongoClient } from 'mongodb';
 import Typography from '@mui/material/Typography';
+import { connectToDatabase } from '../lib/auth';
 const mongodb = require('mongodb');
 
 export default function Index(props) {
@@ -49,9 +49,7 @@ export async function getServerSideProps(context) {
   }
 
   async function fetchData() {
-    const client = await MongoClient.connect(
-      'mongodb+srv://Develop_user:Develop_pass@cluster0.iyq4vsj.mongodb.net/test'
-    );
+    const client = await connectToDatabase();
     const database = client.db('clothing-store');
     const collection = database.collection('items');
     const data = await collection.find({ _id: { $in: cookiesData } }).toArray();

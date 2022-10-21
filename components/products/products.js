@@ -74,8 +74,7 @@ export default function Products(props) {
       sx={{
         p: 2,
         m: 3,
-        backgroundColor: '#ecf6fb',
-        border: '1px solid white',
+        backgroundColor: 'white',
         borderRadius: '10px',
       }}
     >
