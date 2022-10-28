@@ -10,10 +10,17 @@ import { FavoritesContextProvider } from '../context/favorites-context';
 import '../styles.css';
 import Navigation from '../components/navigation/navigation';
 import { AuthContextProvider } from '../context/auth-context';
+import { CartContextProvider } from '../context/cart-context';
+import { SessionProvider } from 'next-auth/react';
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    session,
+    pageProps,
+  } = props;
 
   return (
     <CacheProvider value={emotionCache}>
@@ -22,12 +29,16 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AuthContextProvider>
-          <FavoritesContextProvider>
-            <Navigation />
-            <Component {...pageProps} />
-          </FavoritesContextProvider>
-        </AuthContextProvider>
+        <SessionProvider session={session}>
+          <CartContextProvider>
+            <AuthContextProvider>
+              <FavoritesContextProvider>
+                <Navigation />
+                <Component {...pageProps} />
+              </FavoritesContextProvider>
+            </AuthContextProvider>
+          </CartContextProvider>
+        </SessionProvider>
       </ThemeProvider>
     </CacheProvider>
   );

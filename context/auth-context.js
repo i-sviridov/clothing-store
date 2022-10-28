@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
+
 import authReducer from './auth-lib/auth-reducer';
 import { isEmpty } from './auth-lib/auth-helper-functions';
 import { isNotSevenCharLong } from './auth-lib/auth-helper-functions';
@@ -14,6 +17,7 @@ export const AuthContext = React.createContext({
   formButtonHandler: () => {},
   logInMenu: true,
   switchLogInMenu: () => {},
+  loading: false,
 });
 
 const defaultAuthState = {
@@ -21,6 +25,7 @@ const defaultAuthState = {
     value: '',
     wasTouched: false,
     hasError: false,
+    errorMessage: null,
   },
   password: {
     value: '',
@@ -28,9 +33,11 @@ const defaultAuthState = {
     hasError: false,
   },
   logInMenu: true,
+  loading: false,
 };
 
 export function AuthContextProvider(props) {
+  const router = useRouter();
   const [authState, dispatchAuthAction] = React.useReducer(
     authReducer,
     defaultAuthState
@@ -66,9 +73,9 @@ export function AuthContextProvider(props) {
     });
   }
 
-  function formButtonHandler() {
+  async function formButtonHandler() {
     dispatchAuthAction({
-      field: 'button',
+      type: 'form-button-clicked',
     });
 
     if (
@@ -78,7 +85,55 @@ export function AuthContextProvider(props) {
       return;
     }
 
-    console.log('OK');
+    dispatchAuthAction({
+      field: 'loading',
+      type: 'start',
+    });
+
+    const username = authState.username.value;
+    const password = authState.password.value;
+
+    if (authState.logInMenu) {
+      const result = await signIn('credentials', {
+        redirect: false,
+        username,
+        password,
+      });
+
+      if (!result.error) {
+        router.replace('/');
+      }
+      dispatchAuthAction({
+        field: 'loading',
+        type: 'end',
+      });
+      return;
+    } else {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        dispatchAuthAction({
+          field: 'error',
+          type: data.type,
+          message: data.message,
+        });
+      }
+
+      dispatchAuthAction({
+        field: 'loading',
+        type: 'end',
+      });
+
+      return data;
+    }
   }
 
   function switchLogInMenu() {
@@ -95,6 +150,7 @@ export function AuthContextProvider(props) {
     formButtonHandler,
     logInMenu: authState.logInMenu,
     switchLogInMenu,
+    loading: authState.loading,
   };
 
   return (

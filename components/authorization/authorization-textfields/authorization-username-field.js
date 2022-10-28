@@ -32,7 +32,7 @@ export default function AuthorizationUsernameField() {
       }}
       helperText={
         ctx.username.hasError
-          ? 'Username should not be empty'
+          ? ctx.username.errorMessage
           : 'Demo Username: TestUser'
       }
     />

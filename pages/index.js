@@ -27,6 +27,8 @@ export async function getServerSideProps() {
 
   const data = await fetchData();
   return {
-    props: { data: JSON.stringify(data) },
+    props: {
+      data: JSON.stringify(data),
+    },
   };
 }

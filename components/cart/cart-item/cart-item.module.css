@@ -1,0 +1,24 @@
+.cart-image {
+  width: 8rem;
+}
+
+.cart-color {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+}
+
+@media (min-width: 820px) {
+  .cart-image {
+    width: 10rem;
+  }
+
+  .cart-color {
+    content: '';
+
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+  }
+}

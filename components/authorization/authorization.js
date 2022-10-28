@@ -3,6 +3,8 @@ import { AuthContext } from '../../context/auth-context';
 
 import AuthorizationUsernameField from './authorization-textfields/authorization-username-field';
 import AuthorizationPasswordField from './authorization-textfields/authorization-password-field';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -11,6 +13,18 @@ import Typography from '@mui/material/Typography';
 
 export default function Authorization() {
   const ctx = useContext(AuthContext);
+
+  if (ctx.loading) {
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open
+      >
+        <CircularProgress color="primary" />
+      </Backdrop>
+    );
+  }
+
   return (
     <Box
       sx={{

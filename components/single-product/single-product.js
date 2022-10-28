@@ -2,14 +2,17 @@ import classes from './single-product.module.css';
 
 import { useContext, useReducer, useEffect } from 'react';
 import { FavoritesContext } from '../../context/favorites-context';
+import { CartContext } from '../../context/cart-context';
 import Link from 'next/link';
+import Button from '@mui/material/Button';
 
 export default function singleProduct(props) {
-  const ctx = useContext(FavoritesContext);
+  const favCtx = useContext(FavoritesContext);
+  const cartCtx = useContext(CartContext);
 
   useEffect(() => {
     if (props.isFavorite) {
-      ctx.addItem(props.data._id);
+      favCtx.addItem(props.data._id);
     }
   }, [props.isFavorite]);
 
@@ -69,14 +72,14 @@ export default function singleProduct(props) {
     defaultProductOptions
   );
 
-  let isFavorite = ctx.items.includes(props.data._id);
+  let isFavorite = favCtx.items.includes(props.data._id);
 
   function favoritesHandler() {
     if (!isFavorite) {
-      ctx.addItem(props.data._id);
+      favCtx.addItem(props.data._id);
     }
     if (isFavorite) {
-      ctx.deleteItem(props.data._id);
+      favCtx.deleteItem(props.data._id);
     }
   }
 
@@ -90,11 +93,6 @@ export default function singleProduct(props) {
 
   function changeAmountHandler(type) {
     dispatchOptionsAction({ type });
-  }
-
-  function addToCartHandler() {
-    console.log(productOptions);
-    dispatchOptionsAction({ type: 'ADD_TO_CART' });
   }
 
   return (
@@ -153,22 +151,43 @@ export default function singleProduct(props) {
           </div>
         </div>
         <div className={classes['product-buttons']}>
-          <button
-            className={`button ${classes['product-button']}`}
-            onClick={addToCartHandler}
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ mx: 4, mt: 2, width: '12rem' }}
+            // className={`button ${classes['product-button']}`}
+            onClick={cartCtx.addToCartHandler.bind(
+              null,
+              props.data._id,
+              props.data.title,
+              props.data.imageUrl,
+              productOptions.color,
+              productOptions.size,
+              props.data.price,
+              productOptions.selectedAmount,
+              productOptions.totalPrice
+            )}
           >
             Add to cart
-          </button>
-          <button
-            className={`button ${classes['product-button']}`}
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ mx: 4, mt: 2, width: '12rem' }}
+            // className={`button ${classes['product-button']}`}
             onClick={favoritesHandler}
           >
             {isFavorite ? 'Unmark as favorite' : 'Mark as favorite'}
-          </button>
+          </Button>
           <Link href="/">
-            <button className={`button ${classes['product-button']}`}>
+            <Button
+              sx={{ mx: 4, mt: 2, width: '12rem' }}
+              variant="contained"
+              color="secondary"
+              // className={`button ${classes['product-button']}`}
+            >
               Back to main page
-            </button>
+            </Button>
           </Link>
         </div>
       </div>

@@ -16,9 +16,10 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "bcryptjs": "^2.4.3",
     "mongodb": "^4.10.0",
     "next": "latest",
-    "next-auth": "3.29.10",
+    "next-auth": "^4.15.0",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest"
