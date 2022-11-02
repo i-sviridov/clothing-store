@@ -104,8 +104,6 @@ export function CartContextProvider(props) {
       id,
       newAmount,
     });
-
-    c;
   }
 
   const context = {

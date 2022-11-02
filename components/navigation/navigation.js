@@ -23,7 +23,8 @@ import CartComponent from '../cart/cart';
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const { data: session, status } = useSession();
+  const session = useSession();
+  const { status } = session;
 
   const router = useRouter();
 

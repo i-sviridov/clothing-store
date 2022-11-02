@@ -1,5 +1,5 @@
-import { isEmpty } from './auth-helper-functions';
-import { isNotSevenCharLong } from './auth-helper-functions';
+import { isEmpty } from '../../lib/helper-functions';
+import { isNotSevenCharLong } from '../../lib/helper-functions';
 
 export default function authReducer(state, action) {
   if (action.field === 'username') {

@@ -4,8 +4,8 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 import authReducer from './auth-lib/auth-reducer';
-import { isEmpty } from './auth-lib/auth-helper-functions';
-import { isNotSevenCharLong } from './auth-lib/auth-helper-functions';
+import { isEmpty } from '../lib/helper-functions';
+import { isNotSevenCharLong } from '../lib/helper-functions';
 
 export const AuthContext = React.createContext({
   username: {},

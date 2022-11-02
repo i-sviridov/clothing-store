@@ -77,6 +77,15 @@ export default function CartComponent() {
           color="secondary"
           sx={{ width: '10rem', mt: 3, mx: 3 }}
           variant="contained"
+          onClick={() => {
+            fetch('/api/add-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(ctx.items),
+            }).then((data) => console.log(data));
+          }}
         >
           Order Now
         </Button>
