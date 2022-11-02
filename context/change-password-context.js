@@ -11,7 +11,7 @@ export const ChangePassword = React.createContext({
   newPasswordInputHandler: () => {},
   newPasswordWasTouched: () => {},
   confirmButtonHandler: () => {},
-  loading: false,
+  snackbarStatus: null,
 });
 
 const defaultPassState = {
@@ -27,7 +27,7 @@ const defaultPassState = {
     hasError: false,
     errorMessage: null,
   },
-  loading: false,
+  snackbarStatus: null,
 };
 
 export function ChangePasswordProvider(props) {
@@ -72,17 +72,25 @@ export function ChangePasswordProvider(props) {
       type: 'confirm-button-clicked',
     });
 
+    dispatchPasswordAction({
+      field: 'snackbar-status',
+      type: 'start-loading',
+    });
+
     const oldPassword = passwordState.oldPassword.value;
     const newPassword = passwordState.newPassword.value;
 
     if (isNotSevenCharLong(oldPassword) || isNotSevenCharLong(newPassword)) {
+      dispatchPasswordAction({
+        field: 'snackbar-status',
+        type: 'error',
+      });
+      dispatchPasswordAction({
+        field: 'snackbar-status',
+        type: 'end-loading',
+      });
       return;
     }
-
-    dispatchPasswordAction({
-      field: 'loading',
-      type: 'start',
-    });
 
     const response = await fetch('/api/change-password', {
       method: 'PATCH',
@@ -92,43 +100,50 @@ export function ChangePasswordProvider(props) {
       },
     });
 
-    const parsedResponse = await response.json();
-    console.log(parsedResponse);
+    if (response.ok) {
+      dispatchPasswordAction({
+        field: 'snackbar-status',
+        type: 'success',
+      });
+    } else {
+      const parsedResponse = await response.json();
+      if (parsedResponse.message === 'Invalid old password.') {
+        dispatchPasswordAction({
+          field: 'error',
+          type: 'old-password',
+          errorMessage: parsedResponse.message,
+        });
+      }
+      if (
+        parsedResponse.message === 'New password is the same as the old one.'
+      ) {
+        dispatchPasswordAction({
+          field: 'error',
+          type: 'new-password',
+          errorMessage: parsedResponse.message,
+        });
+      }
+      if (
+        parsedResponse.message ===
+        'Unable to change password for a TestUser, its a demo account. Create your own one!'
+      ) {
+        dispatchPasswordAction({
+          field: 'error',
+          type: 'old-password',
+          errorMessage: parsedResponse.message,
+        });
+      }
 
-    // if (passwordState.logInMenu) {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     oldPassword,
-    //     newPassword,
-    //   });
-
-    //   if (!result.error) {
-    //     router.replace('/');
-    //   }
-    //   dispatchPasswordAction({
-    //     field: 'loading',
-    //     type: 'end',
-    //   });
-    //   return;
-    // } else {
-
-    //   const data = await response.json();
-
-    //   if (!response.ok) {
-    //     dispatchPasswordAction({
-    //       field: 'old-password-error',
-    //       type: data.type,
-    //       message: data.message,
-    //     });
-    //   }
+      dispatchPasswordAction({
+        field: 'snackbar-status',
+        type: 'error',
+      });
+    }
 
     dispatchPasswordAction({
-      field: 'loading',
-      type: 'end',
+      field: 'snackbar-status',
+      type: 'end-loading',
     });
-
-    //   return data;
-    // }
   }
 
   const context = {
@@ -139,7 +154,7 @@ export function ChangePasswordProvider(props) {
     newPasswordInputHandler,
     newPasswordWasTouched,
     confirmButtonHandler,
-    loading: passwordState.loading,
+    snackbarStatus: passwordState.snackbarStatus,
   };
 
   return (

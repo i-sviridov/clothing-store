@@ -15,7 +15,7 @@ export default function ProfileOrders(props) {
   if (props.orders.length > 1) {
     orderListContent = props.orders.map((order) => {
       return (
-        <Accordion>
+        <Accordion key={order._id}>
           <AccordionSummary
             key={order._id}
             expandIcon={<ExpandMoreIcon />}
@@ -27,7 +27,7 @@ export default function ProfileOrders(props) {
           <AccordionDetails>
             {order.items.map((item) => {
               return (
-                <Grid container sx={{ mt: 5 }}>
+                <Grid container sx={{ mt: 5 }} key={item.id}>
                   <Grid container item justifyContent="center" xs={12} md={5}>
                     <img
                       className={classes['cart-image']}

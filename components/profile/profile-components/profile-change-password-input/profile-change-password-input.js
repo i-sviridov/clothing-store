@@ -51,9 +51,7 @@ export default function ProfileChangePasswordInput(props) {
         label={props.data.label}
       />
       <FormHelperText id="password-helper-text">
-        {props.data.hasError
-          ? 'Password should be at least 7 characters long'
-          : props.data.helperText}
+        {props.data.hasError ? props.data.errorMessage : props.data.helperText}
       </FormHelperText>
     </FormControl>
   );

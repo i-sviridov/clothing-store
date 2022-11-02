@@ -40,6 +40,10 @@ export default function changePasswordReducer(state, action) {
           hasError:
             isNotSevenCharLong(action.data) && state.newPassword.wasTouched,
           wasTouched: state.newPassword.wasTouched,
+          errorMessage:
+            isNotSevenCharLong(action.data) &&
+            state.newPassword.wasTouched &&
+            'Password should be at least 7 characters long',
         },
       };
     }
@@ -50,6 +54,9 @@ export default function changePasswordReducer(state, action) {
           value: state.newPassword.value,
           hasError: isNotSevenCharLong(state.newPassword.value),
           wasTouched: true,
+          errorMessage:
+            isNotSevenCharLong(state.newPassword.value) &&
+            'Password should be at least 7 characters long',
         },
       };
     }
@@ -91,17 +98,54 @@ export default function changePasswordReducer(state, action) {
   //   }
   // }
 
-  if (action.field === 'loading') {
-    if (action.type === 'start') {
+  if (action.field === 'snackbar-status') {
+    if (action.type === 'start-loading') {
       return {
         ...state,
-        loading: true,
+        snackbarStatus: 'loading',
       };
     }
-    if (action.type === 'end') {
+    if (action.type === 'end-loading') {
       return {
         ...state,
-        loading: false,
+        snackbarStatus: null,
+      };
+    }
+    if (action.type === 'success') {
+      return {
+        ...state,
+        snackbarStatus: 'success',
+      };
+    }
+    if (action.type === 'error') {
+      return {
+        ...state,
+        snackbarStatus: 'error',
+      };
+    }
+  }
+
+  if (action.field === 'error') {
+    if (action.type === 'old-password') {
+      return {
+        ...state,
+        oldPassword: {
+          value: state.oldPassword.value,
+          hasError: true,
+          wasTouched: true,
+          errorMessage: action.errorMessage,
+        },
+      };
+    }
+    if (action.type === 'new-password') {
+      return {
+        ...state,
+        newPassword: {
+          value: state.newPassword.value,
+          hasError: true,
+          wasTouched: true,
+          errorMessage: action.errorMessage,
+        },
       };
     }
   }
