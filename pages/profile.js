@@ -1,32 +1,27 @@
 import { connectToDatabase } from '../lib/auth';
 import { authOptions } from './api/auth/[...nextauth]';
 
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { unstable_getServerSession } from 'next-auth';
 import Profile from '../components/profile/profile';
 
 export default function Page(props) {
+  if (typeof window === 'undefined') return null;
+  const router = useRouter();
   const parsedData = JSON.parse(props.data);
   const parsedUser = JSON.parse(props.user);
 
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  if (typeof window === 'undefined') return null;
-
-  if (!session) {
-    router.push('/auth');
-    return <p>Redirecting...</p>;
-  }
-
-  if (session) {
+  if (parsedUser) {
     return <Profile data={parsedData} user={parsedUser} />;
-  }
+  } else router.push('/auth');
+  return <p>Redirecting...</p>;
 }
 
 export async function getServerSideProps(context) {
   const { req, res } = context;
+
+  const cookies = context.req.headers.cookie;
+  console.log(cookies);
 
   const session = await unstable_getServerSession(req, res, authOptions);
   let data = null;

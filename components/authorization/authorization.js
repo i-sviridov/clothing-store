@@ -26,60 +26,63 @@ export default function Authorization() {
   }
 
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50% , -50%)',
-        padding: '2rem',
-        backgroundColor: 'white',
-        borderRadius: '10px',
-        border: '1px solid black',
-        zIndex: 1,
-      }}
-    >
-      <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-        {ctx.logInMenu ? 'Log In' : 'Sign Up'}
-      </Typography>
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        direction="column"
-        component="form"
-        sx={{ width: { xs: '15rem', md: '20rem' } }}
+    <Grid container justifyContent="center" alignItems="center">
+      <Box
+        sx={{
+          mt: '25vh',
+          mb: 5,
+          padding: '2rem',
+          backgroundColor: 'white',
+          borderRadius: '10px',
+          border: '1px solid black',
+          zIndex: 1,
+        }}
       >
-        <AuthorizationUsernameField />
-        <AuthorizationPasswordField />
-
-        <Button
-          variant="contained"
-          sx={{
-            mt: 2,
-            backgroundColor: 'secondary.main',
-            color: 'white',
-            width: '10rem',
-          }}
-          onClick={ctx.formButtonHandler}
-        >
-          {ctx.logInMenu ? 'Log In' : 'Create Account'}
-        </Button>
         <Typography
-          variant="h5"
-          sx={{
-            textAlign: 'center',
-            mt: 2,
-            cursor: 'pointer',
-            '&:hover': { color: 'rgb(178, 165, 138)' },
-          }}
-          onClick={ctx.switchLogInMenu}
+          variant="h4"
+          sx={{ textAlign: 'center', fontWeight: 'bold' }}
         >
-          {ctx.logInMenu
-            ? 'Create a new account'
-            : 'Login with an existing accont'}
+          {ctx.logInMenu ? 'Log In' : 'Sign Up'}
         </Typography>
-      </Grid>
-    </Box>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+          component="form"
+          sx={{ width: { xs: '15rem', md: '20rem' } }}
+        >
+          <AuthorizationUsernameField />
+          <AuthorizationPasswordField />
+
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              backgroundColor: 'secondary.main',
+              color: 'white',
+              width: '10rem',
+            }}
+            onClick={ctx.formButtonHandler}
+          >
+            {ctx.logInMenu ? 'Log In' : 'Create Account'}
+          </Button>
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: 'center',
+              mt: 2,
+              cursor: 'pointer',
+              '&:hover': { color: 'rgb(178, 165, 138)' },
+            }}
+            onClick={ctx.switchLogInMenu}
+          >
+            {ctx.logInMenu
+              ? 'Create a new account'
+              : 'Login with an existing accont'}
+          </Typography>
+        </Grid>
+      </Box>
+    </Grid>
   );
 }

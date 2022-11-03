@@ -22,7 +22,6 @@ export default function Products(props) {
   );
 
   function pageContentReducer(state, action) {
-    console.log(state, action);
     if (action.type === 'Category') {
       if (action.selection !== 'all-products') {
         return {
@@ -69,6 +68,46 @@ export default function Products(props) {
     dispatchFilterAction({ type, selection: event.target.value });
   }
 
+  let renderedContent;
+
+  if (filter.content.length > 0) {
+    renderedContent = filter.content.map((element) => (
+      <Grid
+        key={element._id}
+        container
+        item
+        xs={12}
+        sm={6}
+        md={3}
+        component={Link}
+        href={element._id}
+        sx={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        <Box className={classes.container}>
+          <Grid item xs={12} mt={2}>
+            <Typography align="center" variant="h6">
+              {element.title}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <img className={classes.image} src={element.imageUrl} />
+          </Grid>
+          <Grid item xs={12} mb={2}>
+            <Typography align="center" variant="h6">
+              {element.price + ' $'}
+            </Typography>
+          </Grid>
+        </Box>
+      </Grid>
+    ));
+  } else {
+    renderedContent = (
+      <Typography variant="h4" sx={{ my: 3 }}>
+        There are no products matching criteria available!
+      </Typography>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -92,35 +131,7 @@ export default function Products(props) {
       </Grid>
 
       <Grid container spacing={3} justifyContent="center">
-        {filter.content.map((element) => (
-          <Grid
-            key={element._id}
-            container
-            item
-            xs={12}
-            sm={6}
-            md={3}
-            component={Link}
-            href={element._id}
-            sx={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <Box className={classes.container}>
-              <Grid item xs={12} mt={2}>
-                <Typography align="center" variant="h6">
-                  {element.title}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <img className={classes.image} src={element.imageUrl} />
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <Typography align="center" variant="h6">
-                  {element.price + ' $'}
-                </Typography>
-              </Grid>
-            </Box>
-          </Grid>
-        ))}
+        {renderedContent}
       </Grid>
     </Box>
   );

@@ -9,14 +9,15 @@ export default function welcomePart() {
         alt="clothing store image"
       />
       <section className={classes['welcome-text']}>
-        <h2>Delicious Food, Delivered To You</h2>
+        <h2>Welcome To Our Clothing Store With The Best Prices!</h2>
         <p>
-          Choose your favorite meal from our broad selection of available meals
-          and enjoy a delicious lunch or dinner at home.
+          Choose your favorite clothes among different categories and price
+          ranges!
         </p>
         <p>
-          All our meals are cooked with high-quality ingredients, just-in-time
-          and of course by experienced chefs!
+          All our clothes are made from high-quality materials by our best
+          manufacturers and of course all our orders are delievered
+          just-in-time!
         </p>
       </section>
     </>

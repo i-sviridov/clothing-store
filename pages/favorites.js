@@ -1,11 +1,13 @@
 import Products from '../components/products/products';
 import Link from '../components/Link';
 import Box from '@mui/material/Box';
+import WelcomePart from '../components/welcome-part/welcome-part';
 
 import { useState, useEffect } from 'react';
 
 import Typography from '@mui/material/Typography';
 import { connectToDatabase } from '../lib/auth';
+import Button from '@mui/material/Button';
 const mongodb = require('mongodb');
 
 export default function Index(props) {
@@ -21,6 +23,7 @@ export default function Index(props) {
 
   return (
     <>
+      <WelcomePart />
       <Products data={parsedData}></Products>
       {!hasFavoritesData && (
         <Typography textAlign="center" variant="h4" sx={{ my: 3 }}>
@@ -28,10 +31,21 @@ export default function Index(props) {
         </Typography>
       )}
 
-      <Box component={Link} href="/" sx={{ textDecoration: 'none' }}>
-        <button className={`button center-block-element`}>
+      <Box
+        component={Link}
+        href="/"
+        sx={{ textDecoration: 'none' }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ width: '12rem', my: 5 }}
+        >
           Back to main page
-        </button>
+        </Button>
       </Box>
     </>
   );
@@ -39,11 +53,15 @@ export default function Index(props) {
 
 export async function getServerSideProps(context) {
   const cookies = context.req.headers.cookie;
+  console.log(cookies);
 
   let cookiesData = [];
   if (cookies) {
     cookiesData = cookies
       .split('; ')
+      .filter((item) => {
+        return !item.startsWith('next');
+      })
       .map((item) => item.split('=')[0])
       .map((item) => new mongodb.ObjectID(item));
   }
