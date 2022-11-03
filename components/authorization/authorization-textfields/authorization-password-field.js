@@ -62,7 +62,7 @@ export default function AuthorizationPasswordField() {
       />
       <FormHelperText id="password-helper-text">
         {ctx.password.hasError
-          ? 'Password should be at least 7 characters long'
+          ? ctx.password.errorMessage
           : 'Demo Password: TestPass123'}
       </FormHelperText>
     </FormControl>

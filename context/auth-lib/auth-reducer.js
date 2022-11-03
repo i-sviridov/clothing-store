@@ -5,6 +5,7 @@ export default function authReducer(state, action) {
   if (action.field === 'username') {
     if (action.type === 'input-typing') {
       return {
+        ...state,
         username: {
           value: action.data,
           hasError: isEmpty(action.data) && state.username.wasTouched,
@@ -14,13 +15,11 @@ export default function authReducer(state, action) {
             state.username.wasTouched &&
             'Username should not be empty',
         },
-        password: state.password,
-        logInMenu: state.logInMenu,
-        loading: state.loading,
       };
     }
     if (action.type === 'was-touched') {
       return {
+        ...state,
         username: {
           value: state.username.value,
           hasError: isEmpty(state.username.value),
@@ -28,41 +27,35 @@ export default function authReducer(state, action) {
           errorMessage:
             isEmpty(state.username.value) && 'Username should not be empty',
         },
-        password: state.password,
-        logInMenu: state.logInMenu,
-        loading: state.loading,
       };
     }
   }
   if (action.field === 'password') {
     if (action.type === 'input-typing') {
       return {
+        ...state,
         password: {
           value: action.data,
           hasError:
             isNotSevenCharLong(action.data) && state.password.wasTouched,
           wasTouched: state.password.wasTouched,
         },
-        username: state.username,
-        logInMenu: state.logInMenu,
-        loading: state.loading,
       };
     }
     if (action.type === 'was-touched') {
       return {
+        ...state,
         password: {
           value: state.password.value,
           hasError: isNotSevenCharLong(state.password.value),
           wasTouched: true,
         },
-        username: state.username,
-        logInMenu: state.logInMenu,
-        loading: state.loading,
       };
     }
   }
   if (action.type === 'form-button-clicked') {
     return {
+      ...state,
       username: {
         value: state.username.value,
         hasError: state.username.value.trim() === '',
@@ -75,30 +68,46 @@ export default function authReducer(state, action) {
         hasError: state.password.value.trim().length < 7,
         wasTouched: true,
       },
-      logInMenu: state.logInMenu,
-      loading: state.loading,
     };
   }
   if (action.field === 'switch-menu') {
     return {
+      ...state,
       logInMenu: !state.logInMenu,
-      username: state.username,
-      password: state.password,
-      loading: state.loading,
     };
   }
   if (action.field === 'error') {
     if (action.type === 'user-exists') {
       return {
-        logInMenu: state.logInMenu,
+        ...state,
         username: {
           value: state.username.value,
           hasError: true,
           wasTouched: true,
-          errorMessage: 'Username already exists',
+          errorMessage: action.message,
         },
-        password: state.password,
-        loading: state.loading,
+      };
+    }
+    if (action.type === 'no-user-found') {
+      return {
+        ...state,
+        username: {
+          value: state.username.value,
+          hasError: true,
+          wasTouched: true,
+          errorMessage: action.message,
+        },
+      };
+    }
+    if (action.type === 'incorrect-password') {
+      return {
+        ...state,
+        password: {
+          value: state.password.value,
+          hasError: true,
+          wasTouched: true,
+          errorMessage: action.message,
+        },
       };
     }
   }

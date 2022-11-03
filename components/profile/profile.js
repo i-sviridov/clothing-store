@@ -16,7 +16,7 @@ export default function Profile(props) {
         Welcome, {props.user} !
       </Typography>
 
-      <Grid container justifyContent="center" alignContent="center">
+      <Grid container justifyContent="center" alignContent="center" mb={3}>
         <Paper sx={{ mt: 5, px: 5, py: 2 }} elevation={5}>
           <ChangePasswordProvider>
             <ProfileChangePassword />

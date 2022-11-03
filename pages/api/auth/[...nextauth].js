@@ -24,7 +24,7 @@ export const authOptions = {
         );
         if (!isValid) {
           client.close();
-          throw new Error('Could not log you in!');
+          throw new Error('Incorrect password!');
         }
         client.close();
 

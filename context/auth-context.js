@@ -31,6 +31,7 @@ const defaultAuthState = {
     value: '',
     wasTouched: false,
     hasError: false,
+    errorMessage: null,
   },
   logInMenu: true,
   loading: false,
@@ -99,6 +100,22 @@ export function AuthContextProvider(props) {
         username,
         password,
       });
+
+      if (result.error === 'No user found!') {
+        dispatchAuthAction({
+          field: 'error',
+          type: 'no-user-found',
+          message: result.error,
+        });
+      }
+
+      if (result.error === 'Incorrect password!') {
+        dispatchAuthAction({
+          field: 'error',
+          type: 'incorrect-password',
+          message: result.error,
+        });
+      }
 
       if (!result.error) {
         router.replace('/');
