@@ -2,6 +2,21 @@ import classes from './welcome-part.module.css';
 
 import { motion } from 'framer-motion';
 
+const CarouselVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { duration: 1 },
+  },
+};
+
+const CarouselProps = {
+  initial: 'initial',
+  whileInView: 'animate',
+  viewport: { once: true },
+  variants: CarouselVariants,
+};
+
 const ProductionVariants = {
   initial: { y: 150 },
   animate: {
@@ -25,7 +40,7 @@ const MotionProps = {
 export default function welcomePart() {
   return (
     <>
-      <div className={classes['slider-box']}>
+      <motion.div {...CarouselProps} className={classes['slider-box']}>
         <div className={classes.slider}>
           <div className={classes['slide-track']}>
             <div className={classes.slide}>
@@ -94,7 +109,7 @@ export default function welcomePart() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       <motion.section {...MotionProps} className={classes['welcome-text']}>
         <h2>Welcome To Our Clothing Store With The Best Prices!</h2>
         <p>
@@ -110,11 +125,5 @@ export default function welcomePart() {
     </>
   );
   {
-    /* <img
-        className={classes['welcome-image']}
-        src="/images/clothing-store-image.jpg"
-        alt="clothing store image"
-      /> */
   }
-  // );
 }

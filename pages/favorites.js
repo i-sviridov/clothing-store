@@ -9,6 +9,23 @@ import { connectToDatabase } from '../lib/auth';
 import Button from '@mui/material/Button';
 const mongodb = require('mongodb');
 
+import { motion } from 'framer-motion';
+
+const ProductionVariants = {
+  initial: { y: 150 },
+  animate: {
+    y: 0,
+    transition: { type: 'spring', bounce: 0.4, duration: 2 },
+  },
+};
+
+const MotionProps = {
+  initial: 'initial',
+  whileInView: 'animate',
+  viewport: { once: true },
+  variants: ProductionVariants,
+};
+
 export default function Index(props) {
   const [hasFavoritesData, setHasFavoritesData] = useState(true);
 
@@ -38,6 +55,8 @@ export default function Index(props) {
         alignItems="center"
       >
         <Button
+          component={motion.button}
+          {...MotionProps}
           variant="contained"
           color="secondary"
           sx={{ width: '12rem', my: 5 }}
@@ -57,10 +76,12 @@ export async function getServerSideProps(context) {
     cookiesData = cookies
       .split('; ')
       .filter((item) => {
-        return !item.startsWith('next');
+        return item.startsWith('633');
       })
       .map((item) => item.split('=')[0])
-      .map((item) => new mongodb.ObjectID(item));
+      .map((item) => {
+        return new mongodb.ObjectID(item);
+      });
   }
 
   async function fetchData() {

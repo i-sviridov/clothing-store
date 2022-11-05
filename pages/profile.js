@@ -13,6 +13,8 @@ export default function Page(props) {
 
   if (parsedUser) {
     return <Profile data={parsedData} user={parsedUser} />;
+  } else if (router.pathname === '/auth') {
+    return;
   } else router.push('/auth');
   return <p>Redirecting...</p>;
 }
