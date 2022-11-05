@@ -17,6 +17,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ProfileChangePassword() {
   const ctx = useContext(ChangePassword);
+  console.log(ctx.snackbarStatus);
   const [snackbarVisibility, setSnackbarVisiblity] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState(null);
   const [snackbarMessage, setSnackbarMessage] = useState(null);

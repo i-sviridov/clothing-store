@@ -63,6 +63,7 @@ export default function changePasswordReducer(state, action) {
   }
   if (action.type === 'confirm-button-clicked') {
     return {
+      ...state,
       oldPassword: {
         value: state.oldPassword.value,
         hasError: state.oldPassword.value.trim().length < 7,
@@ -79,7 +80,7 @@ export default function changePasswordReducer(state, action) {
           'Password should be at least 7 characters long',
         wasTouched: true,
       },
-      loading: state.loading,
+      // loading: state.loading,
     };
   }
 

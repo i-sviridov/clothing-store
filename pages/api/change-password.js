@@ -34,7 +34,7 @@ export default async (req, res) => {
       currentPassword
     );
 
-    if ((session.user = 'TestUser')) {
+    if (session.user === 'TestUser') {
       res.status(403).json({
         message:
           'Unable to change password for a TestUser, its a demo account. Create your own one!',

@@ -107,6 +107,7 @@ export function ChangePasswordProvider(props) {
       });
     } else {
       const parsedResponse = await response.json();
+
       if (parsedResponse.message === 'Invalid old password.') {
         dispatchPasswordAction({
           field: 'error',
@@ -139,11 +140,6 @@ export function ChangePasswordProvider(props) {
         type: 'error',
       });
     }
-
-    dispatchPasswordAction({
-      field: 'snackbar-status',
-      type: 'end-loading',
-    });
   }
 
   const context = {
