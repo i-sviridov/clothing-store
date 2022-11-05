@@ -53,7 +53,12 @@ export default function CartComponent() {
     );
 
   return (
-    <Drawer open anchor="right" onClose={ctx.closeCartHandler}>
+    <Drawer
+      transitionDuration={400}
+      open
+      anchor="right"
+      onClose={ctx.closeCartHandler}
+    >
       {isSendingRequest && (
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -101,7 +106,7 @@ export default function CartComponent() {
             }).then((response) => {
               router.replace('/profile');
               setIsSendingRequest(false);
-              ctx.closeCartHandler();
+              ctx.clearCartHandler();
             });
           }}
         >

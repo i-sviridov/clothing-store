@@ -9,6 +9,7 @@ export const CartContext = React.createContext({
   addToCartHandler: function () {},
   openCartHandler: function () {},
   closeCartHandler: function () {},
+  clearCartHandler: function () {},
   itemAmountChangeHandler: function () {},
   deleteItemHandler: function () {},
 });
@@ -83,6 +84,12 @@ export function CartContextProvider(props) {
     });
   }
 
+  function clearCartHandler() {
+    dispatchCartAction({
+      type: 'CLEAR_CART',
+    });
+  }
+
   function itemAmountChangeHandler(id, color, size, amount) {
     if (amount < 1) {
       dispatchCartAction({
@@ -113,6 +120,7 @@ export function CartContextProvider(props) {
     addToCartHandler,
     openCartHandler,
     closeCartHandler,
+    clearCartHandler,
     itemAmountChangeHandler,
     deleteItemHandler,
   };

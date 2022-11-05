@@ -12,7 +12,15 @@ import Navigation from '../components/navigation/navigation';
 import { AuthContextProvider } from '../context/auth-context';
 import { CartContextProvider } from '../context/cart-context';
 import { SessionProvider } from 'next-auth/react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 const clientSideEmotionCache = createEmotionCache();
+
+const variants = {
+  hidden: { opacity: 0, x: -200, y: 0 },
+  enter: { opacity: 1, x: 0, y: 0 },
+  exit: { opacity: 0, x: 200, y: 0 },
+};
 
 export default function MyApp(props) {
   const {
@@ -20,6 +28,7 @@ export default function MyApp(props) {
     emotionCache = clientSideEmotionCache,
     session,
     pageProps,
+    router,
   } = props;
 
   return (
@@ -34,7 +43,19 @@ export default function MyApp(props) {
             <AuthContextProvider>
               <FavoritesContextProvider>
                 <Navigation />
-                <Component {...pageProps} />
+
+                <AnimatePresence>
+                  <motion.main
+                    key={router.pathname}
+                    initial="hidden"
+                    animate="enter"
+                    exit="exit"
+                    variants={variants}
+                    transition={{ type: 'linear' }}
+                  >
+                    <Component {...pageProps} />
+                  </motion.main>
+                </AnimatePresence>
               </FavoritesContextProvider>
             </AuthContextProvider>
           </CartContextProvider>

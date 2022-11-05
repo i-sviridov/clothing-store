@@ -2,13 +2,12 @@ import { useReducer } from 'react';
 import ProductsFilter from './products-filter/product-filter';
 import categoryFilterData from './categoryFilterData';
 import priceFilterData from './priceFilterData';
-import classes from './products.module.css';
 
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/system/Box';
 
-import Link from '../Link';
+import ProductItem from './product-item/product-item';
 
 export default function Products(props) {
   const defaultPageContent = {
@@ -25,9 +24,11 @@ export default function Products(props) {
     if (action.type === 'Category') {
       if (action.selection !== 'all-products') {
         return {
-          content: props.data.filter((item) => {
-            return item.category === action.selection;
-          }),
+          content: props.data
+            .filter((item) => {
+              return item.category === action.selection;
+            })
+            .map((item) => item),
           category: action.selection,
           price: state.price,
         };
@@ -72,33 +73,7 @@ export default function Products(props) {
 
   if (filter.content.length > 0) {
     renderedContent = filter.content.map((element) => (
-      <Grid
-        key={element._id}
-        container
-        item
-        xs={12}
-        sm={6}
-        md={3}
-        component={Link}
-        href={element._id}
-        sx={{ textDecoration: 'none', color: 'inherit' }}
-      >
-        <Box className={classes.container}>
-          <Grid item xs={12} mt={2}>
-            <Typography align="center" variant="h6">
-              {element.title}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <img className={classes.image} src={element.imageUrl} />
-          </Grid>
-          <Grid item xs={12} mb={2}>
-            <Typography align="center" variant="h6">
-              {element.price + ' $'}
-            </Typography>
-          </Grid>
-        </Box>
-      </Grid>
+      <ProductItem data={element} filter={filter} key={element._id} />
     ));
   } else {
     renderedContent = (

@@ -1,7 +1,6 @@
 export default function cartReducer(state, action) {
   if (action.type === 'ADD_TO_CART') {
     return {
-      ...state,
       isOpen: true,
       cartSum: state.cartSum + action.totalSum,
       items: state.items.concat({
@@ -111,6 +110,14 @@ export default function cartReducer(state, action) {
   if (action.type === 'CART_CLOSE') {
     return {
       ...state,
+      isOpen: false,
+    };
+  }
+
+  if (action.type === 'CLEAR_CART') {
+    return {
+      items: [],
+      cartSum: 0,
       isOpen: false,
     };
   }

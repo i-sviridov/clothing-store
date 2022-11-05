@@ -6,6 +6,23 @@ import { CartContext } from '../../context/cart-context';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 
+import { motion } from 'framer-motion';
+
+const ProductionVariants = {
+  initial: { y: 150 },
+  animate: {
+    y: 0,
+    transition: { type: 'spring', bounce: 0.4, duration: 2 },
+  },
+};
+
+const MotionProps = {
+  initial: 'initial',
+  whileInView: 'animate',
+  viewport: { once: true },
+  variants: ProductionVariants,
+};
+
 export default function singleProduct(props) {
   const favCtx = useContext(FavoritesContext);
   const cartCtx = useContext(CartContext);
@@ -96,7 +113,7 @@ export default function singleProduct(props) {
   }
 
   return (
-    <>
+    <motion.div {...MotionProps}>
       <h1 className={classes['product-title']}>{props.data.title}</h1>
       <div className={classes['product-container']}>
         <img src={props.data.imageUrl} className={classes['product-image']} />
@@ -191,6 +208,6 @@ export default function singleProduct(props) {
           </Link>
         </div>
       </div>
-    </>
+    </motion.div>
   );
 }

@@ -21,10 +21,6 @@ export default function ProfileChangePassword() {
   const [snackbarSeverity, setSnackbarSeverity] = useState(null);
   const [snackbarMessage, setSnackbarMessage] = useState(null);
 
-  console.log('ctx.snackbarStatus', ctx.snackbarStatus);
-  console.log('snackbarVisibility', snackbarVisibility);
-  console.log('snackbarSeverity', snackbarSeverity);
-
   useEffect(() => {
     if (ctx.snackbarStatus === 'loading') {
       setSnackbarVisiblity(true);

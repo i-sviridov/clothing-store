@@ -1,7 +1,6 @@
 import Products from '../components/products/products';
 import Link from '../components/Link';
 import Box from '@mui/material/Box';
-import WelcomePart from '../components/welcome-part/welcome-part';
 
 import { useState, useEffect } from 'react';
 
@@ -23,7 +22,6 @@ export default function Index(props) {
 
   return (
     <>
-      <WelcomePart />
       <Products data={parsedData}></Products>
       {!hasFavoritesData && (
         <Typography textAlign="center" variant="h4" sx={{ my: 3 }}>
@@ -53,7 +51,6 @@ export default function Index(props) {
 
 export async function getServerSideProps(context) {
   const cookies = context.req.headers.cookie;
-  console.log(cookies);
 
   let cookiesData = [];
   if (cookies) {

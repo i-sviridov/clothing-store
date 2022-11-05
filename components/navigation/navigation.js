@@ -20,6 +20,8 @@ import { CartContext } from '../../context/cart-context';
 import { useState, useEffect, useContext } from 'react';
 import CartComponent from '../cart/cart';
 
+import { motion } from 'framer-motion';
+
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -113,7 +115,7 @@ export default function Navigation() {
 
       <MenuItem
         onClick={() => {
-          cartCtx.showCartHandler();
+          cartCtx.openCartHandler();
           handleMobileMenuClose();
         }}
       >
@@ -129,7 +131,11 @@ export default function Navigation() {
         <p>Shopping Cart</p>
       </MenuItem>
 
-      <MenuItem>
+      <MenuItem
+        component={Link}
+        href="/profile"
+        onClick={handleMobileMenuClose}
+      >
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -151,7 +157,16 @@ export default function Navigation() {
         <AppBar position="fixed">
           <Toolbar>
             <Box component={Link} href="/">
-              <Typography variant="h6" color="black">
+              <Typography
+                variant="h6"
+                color="black"
+                component={motion.p}
+                whileHover={{
+                  scale: 1.1,
+                  textShadow: '0px 0px 8px rgb(255,255,255)',
+                  boxShadow: '0px 0px 8px rgb(255,255,255)',
+                }}
+              >
                 Clothing Store
               </Typography>
             </Box>

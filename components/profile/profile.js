@@ -9,9 +9,26 @@ import ProfileChangePassword from './profile-components/profile-change-password'
 import ProfileOrders from './profile-components/profile-orders';
 import { ChangePasswordProvider } from '../../context/change-password-context';
 
+import { motion } from 'framer-motion';
+
+const ProductionVariants = {
+  initial: { y: 150 },
+  animate: {
+    y: 0,
+    transition: { type: 'spring', bounce: 0.4, duration: 2 },
+  },
+};
+
+const MotionProps = {
+  initial: 'initial',
+  whileInView: 'animate',
+  viewport: { once: true },
+  variants: ProductionVariants,
+};
+
 export default function Profile(props) {
   return (
-    <>
+    <motion.div {...MotionProps}>
       <Typography variant="h4" textAlign="center" sx={{ mt: 15 }}>
         Welcome, {props.user} !
       </Typography>
@@ -34,6 +51,6 @@ export default function Profile(props) {
           </Grid>
         </Paper>
       </Grid>
-    </>
+    </motion.div>
   );
 }

@@ -8,14 +8,14 @@ export default function Index(props) {
   const parsedData = JSON.parse(props.data);
 
   return (
-    <main>
+    <>
       <WelcomePart />
       <Products data={parsedData}></Products>
-    </main>
+    </>
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   async function fetchData() {
     const client = await connectToDatabase();
     const database = client.db('clothing-store');

@@ -20,9 +20,6 @@ export default function Page(props) {
 export async function getServerSideProps(context) {
   const { req, res } = context;
 
-  const cookies = context.req.headers.cookie;
-  console.log(cookies);
-
   const session = await unstable_getServerSession(req, res, authOptions);
   let data = null;
   let user = null;
