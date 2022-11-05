@@ -16,17 +16,6 @@ export default async (req, res) => {
   if (session) {
     // Signed in
 
-    if ((session.user = 'TestUser')) {
-      res
-        .status(403)
-        .json({
-          message:
-            'Unable to change password for a TestUser, its a demo account. Create your own one!',
-        });
-      client.close();
-      return;
-    }
-
     const { oldPassword: enteredOldPassword, newPassword: enteredNewPassword } =
       req.body;
 
@@ -44,6 +33,15 @@ export default async (req, res) => {
       enteredOldPassword,
       currentPassword
     );
+
+    if ((session.user = 'TestUser')) {
+      res.status(403).json({
+        message:
+          'Unable to change password for a TestUser, its a demo account. Create your own one!',
+      });
+      client.close();
+      return;
+    }
 
     if (!isOldPasswordCorrect) {
       res.status(403).json({ message: 'Invalid old password.' });

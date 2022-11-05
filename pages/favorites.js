@@ -12,16 +12,16 @@ const mongodb = require('mongodb');
 import { motion } from 'framer-motion';
 
 const ProductionVariants = {
-  initial: { y: 150 },
+  initial: { y: 350 },
   animate: {
     y: 0,
-    transition: { type: 'spring', bounce: 0.4, duration: 2 },
+    transition: { type: 'spring', bounce: 0.4, duration: 4 },
   },
 };
 
 const MotionProps = {
   initial: 'initial',
-  whileInView: 'animate',
+  animate: 'animate',
   viewport: { once: true },
   variants: ProductionVariants,
 };
