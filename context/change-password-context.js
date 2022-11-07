@@ -31,7 +31,6 @@ const defaultPassState = {
 };
 
 export function ChangePasswordProvider(props) {
-  // const router = useRouter();
   const [passwordState, dispatchPasswordAction] = React.useReducer(
     changePasswordReducer,
     defaultPassState

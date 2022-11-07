@@ -17,7 +17,6 @@ export default function cartReducer(state, action) {
   }
 
   if (action.type === 'DELETE_ITEM') {
-    console.log(state, action);
     const existingCartItemIndex = state.items.findIndex(
       (item) =>
         item.id === action.id &&

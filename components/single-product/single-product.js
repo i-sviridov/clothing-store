@@ -1,6 +1,6 @@
 import classes from './single-product.module.css';
 
-import { useContext, useReducer, useEffect } from 'react';
+import { useState, useContext, useReducer, useEffect } from 'react';
 import { FavoritesContext } from '../../context/favorites-context';
 import { CartContext } from '../../context/cart-context';
 import Link from 'next/link';
@@ -89,14 +89,18 @@ export default function singleProduct(props) {
     defaultProductOptions
   );
 
-  let isFavorite = favCtx.items.includes(props.data._id);
+  const [isFavorite, setIsFavorite] = useState(
+    favCtx.items.includes(props.data._id)
+  );
 
   function favoritesHandler() {
     if (!isFavorite) {
       favCtx.addItem(props.data._id);
+      setIsFavorite(true);
     }
     if (isFavorite) {
       favCtx.deleteItem(props.data._id);
+      setIsFavorite(false);
     }
   }
 
@@ -172,7 +176,6 @@ export default function singleProduct(props) {
             variant="contained"
             color="secondary"
             sx={{ mx: 4, mt: 2, width: '12rem' }}
-            // className={`button ${classes['product-button']}`}
             onClick={cartCtx.addToCartHandler.bind(
               null,
               props.data._id,
@@ -191,7 +194,6 @@ export default function singleProduct(props) {
             variant="contained"
             color="secondary"
             sx={{ mx: 4, mt: 2, width: '12rem' }}
-            // className={`button ${classes['product-button']}`}
             onClick={favoritesHandler}
           >
             {isFavorite ? 'Unmark as favorite' : 'Mark as favorite'}
@@ -201,7 +203,6 @@ export default function singleProduct(props) {
               sx={{ mx: 4, mt: 2, width: '12rem' }}
               variant="contained"
               color="secondary"
-              // className={`button ${classes['product-button']}`}
             >
               Back to main page
             </Button>

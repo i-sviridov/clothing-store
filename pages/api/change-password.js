@@ -14,8 +14,6 @@ export default async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions);
 
   if (session) {
-    // Signed in
-
     const { oldPassword: enteredOldPassword, newPassword: enteredNewPassword } =
       req.body;
 
@@ -73,7 +71,6 @@ export default async (req, res) => {
 
     client.close();
   } else {
-    // Not Signed in
     res.status(401);
   }
 };

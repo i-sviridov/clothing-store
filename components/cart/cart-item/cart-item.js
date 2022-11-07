@@ -44,13 +44,7 @@ export default function CartItem(props) {
         <Grid item>
           <Typography variant="h5">${props.amount}</Typography>
         </Grid>
-        <Grid
-          item
-          container
-          justifyContent="center"
-          alignItems="center"
-          // columnSpacing={3}
-        >
+        <Grid item container justifyContent="center" alignItems="center">
           <Grid
             container
             item

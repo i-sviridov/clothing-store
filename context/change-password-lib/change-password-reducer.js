@@ -80,24 +80,8 @@ export default function changePasswordReducer(state, action) {
           'Password should be at least 7 characters long',
         wasTouched: true,
       },
-      // loading: state.loading,
     };
   }
-
-  // if (action.field === 'old-password-error') {
-  //   if (action.type === 'user-exists') {
-  //     return {
-  //       username: {
-  //         value: state.username.value,
-  //         hasError: true,
-  //         wasTouched: true,
-  //         errorMessage: 'Username already exists',
-  //       },
-  //       password: state.password,
-  //       loading: state.loading,
-  //     };
-  //   }
-  // }
 
   if (action.field === 'snackbar-status') {
     if (action.type === 'start-loading') {

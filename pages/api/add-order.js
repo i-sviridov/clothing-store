@@ -10,8 +10,6 @@ export default async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions);
 
   if (session) {
-    // Signed in
-
     const items = req.body;
 
     const client = await connectToDatabase();
@@ -26,7 +24,6 @@ export default async (req, res) => {
     res.status(201).json({ message: 'Added order!' });
     client.close();
   } else {
-    // Not Signed in
     res.status(401);
   }
   res.end();

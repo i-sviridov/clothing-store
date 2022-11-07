@@ -18,15 +18,17 @@ function favoritesReducer(state, action) {
   if (action.type === 'ADD') {
     document.cookie = `${action.id}=${action.id}`;
     if (state.items.includes(action.id)) {
-      return state;
+      return { state };
     }
     return { items: state.items.concat(action.id), amount: state.amount + 1 };
   }
 
   if (action.type === 'DELETE') {
     document.cookie = `${action.id}=;expires=` + new Date(0).toUTCString();
-    const index = state.items.indexOf(action.id);
-    const updatedArray = state.items.splice(index, 1);
+
+    let updatedArray = state.items.filter((item) => {
+      return item !== action.id;
+    });
 
     return {
       items: updatedArray,

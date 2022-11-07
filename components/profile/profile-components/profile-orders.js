@@ -60,7 +60,6 @@ export default function ProfileOrders(props) {
                       container
                       justifyContent="center"
                       alignItems="center"
-                      // columnSpacing={3}
                     >
                       <Grid
                         container
