@@ -105,7 +105,12 @@ export default function Products(props) {
         />
       </Grid>
 
-      <Grid container spacing={3} justifyContent="center">
+      <Grid
+        container
+        spacing={3}
+        justifyContent="center"
+        sx={{ mt: { xs: 3, sm: 0 } }}
+      >
         {renderedContent}
       </Grid>
     </Box>

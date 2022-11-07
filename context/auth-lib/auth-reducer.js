@@ -39,6 +39,10 @@ export default function authReducer(state, action) {
           hasError:
             isNotSevenCharLong(action.data) && state.password.wasTouched,
           wasTouched: state.password.wasTouched,
+          errorMessage:
+            isNotSevenCharLong(action.data) &&
+            state.password.wasTouched &&
+            'Password should be at least 7 characters long',
         },
       };
     }
@@ -49,6 +53,9 @@ export default function authReducer(state, action) {
           value: state.password.value,
           hasError: isNotSevenCharLong(state.password.value),
           wasTouched: true,
+          errorMessage:
+            isNotSevenCharLong(state.password.value) &&
+            'Password should be at least 7 characters long',
         },
       };
     }

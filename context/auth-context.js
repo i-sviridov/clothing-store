@@ -144,6 +144,14 @@ export function AuthContextProvider(props) {
         });
       }
 
+      if (response.ok) {
+        const result = await signIn('credentials', {
+          redirect: false,
+          username,
+          password,
+        });
+        router.replace('/');
+      }
       dispatchAuthAction({
         field: 'loading',
         type: 'end',

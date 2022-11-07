@@ -76,7 +76,7 @@ export default function ProfileChangePassword() {
       <Snackbar
         open={snackbarVisibility}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
       >
         <Alert
