@@ -18,4 +18,4 @@ This is a small fullstack app simulating the features modern webshops have as:
 * **Vanilla CSS**
 * **Framer Motion**
 * **MongoDB**
-* **NextAuth, bryptjs**
+* **NextAuth, bcryptjs**
