@@ -12,7 +12,7 @@ import classes from '../../cart/cart-item/cart-item.module.css';
 export default function ProfileOrders(props) {
   let orderListContent;
 
-  if (props.orders.length > 1) {
+  if (props.orders.length > 0) {
     orderListContent = props.orders.map((order) => {
       return (
         <Accordion key={order._id}>
