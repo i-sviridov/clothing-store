@@ -4,7 +4,8 @@
 * Website: [https://clothing-store-mu.vercel.app/](https://clothing-store-mu.vercel.app/)
 * Stack: React, Next.js, Material UI,  HTML, CSS, Framer Motion, Node.js,  MongoDB, NextAuth, bryptjs
 
-![image](https://drive.google.com/uc?export=view&id=1yCWfQIx2Wh-NjVImdNo_jAn1CzenR0ku)
+
+![image](https://github.com/i-sviridov/i-sviridov/blob/6c54b3314a4fa3786a04c4f91a6940f36475ee60/clothing-store-files/first-load.gif)
 
 ## Description
 
@@ -15,22 +16,21 @@ The application has an <b>authentication</b>, which is implemented via a custom 
 Should one not want to create a new account, there is a demo account "TestUser" available, and its credentials are shown as helper text below the input fields.
 
 
-![image](https://drive.google.com/uc?export=view&id=13FiWvnM4nhT4AKVAOmmyNu0pTtBAUpcW)
+![image](https://github.com/i-sviridov/i-sviridov/blob/6c54b3314a4fa3786a04c4f91a6940f36475ee60/clothing-store-files/authentication.gif)
 
 
 On the webpage, the user can use various <b>filters</b> to sort the items by price or category as desired.
 
-![image](https://drive.google.com/uc?export=view&id=1zm9Gt2p5oi6Fk0fnO_8QKgJ96uy4zUPf)
+![image](https://github.com/i-sviridov/i-sviridov/tree/main/clothing-store-files/filter.gif)
 
 The user of an application can add items to the <b>cart</b> or mark them as <b>favorites</b>. Once the item is added to the cart, a new menu is opened, where one can check what is in the cart, adjust the quantity if needed, and place an order. If the user is authenticated, he will be redirected to the profile page; otherwise, the user has to enter his credentials since the <b>profile route is protected</b>.
 
 
-![image](https://drive.google.com/uc?export=view&id=1vVYuy9-vl6oEoZtVRjxovKvK7VNhO8fH)
-
+![image](https://github.com/i-sviridov/i-sviridov/blob/6c54b3314a4fa3786a04c4f91a6940f36475ee60/clothing-store-files/cart-favorites.gif)
 
 Finally, on the <b>profile page</b> user can browse the <b>orders</b> that were previously placed as well as <b>change the current password</b> and <b>logout</b>. User input verification regarding the old and new passwords is done both by the frontend and the backend. After the user logs out, the auth token is removed from the cookies, therefore, protected routes become no longer accesible.
 
-
+![image](https://github.com/i-sviridov/i-sviridov/blob/6c54b3314a4fa3786a04c4f91a6940f36475ee60/clothing-store-files/profile%20page.gif)
 
 
 
