@@ -36,13 +36,23 @@ Finally, on the <b>profile page</b> user can browse the <b>orders</b> that were 
 
 The application supports the following API routes:
 
-|  /api/auth/signup                                                                                                                          | /api/change-password                                       | /api/add-order                                                                                                             |
-|-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `{` <br /> ` method: 'POST',` <br />` headers: { 'Content-Type': 'application/json' },` <br /> ` body: JSON.stringify({username, password})` <br />`}` | `{` <br /> ` method: 'PATCH', `<br />` headers: {'Content-Type': 'application/json' }, `<br /> ` body: JSON.stringify({oldPassword, newPassword})` <br />}`` | `{` <br /> ` method: 'POST',` <br />` headers: { 'Content-Type': 'application/json' },` <br /> ` body: JSON.stringify(items)` <br />`}` |
-
-The NextAuth package also supports requests to /api/auth/[...nextAuth] to provide built-in signIn and signOut methods, which are being used in this application.
+| /api/auth/signup|
+|-----------------------------------------------------------------------------------------------------------------------------|
+| `{` <br /> ` method: 'POST',` <br />` headers: { 'Content-Type': 'application/json' },` <br /> ` body: JSON.stringify({username, password})` <br />`}`|
 
 
+
+
+| /api/change-password|
+|-----------------------------------------------------------------------------------------------------------------------------|
+|  `{` <br /> ` method: 'PATCH', `<br />` headers: { 'Content-Type': 'application/json' }, `<br /> ` body: JSON.stringify({oldPassword, newPassword})` <br /> `}` |
+
+
+
+
+| /api/add-order |                                                                                                             
+|-----------------------------------------------------------------------------------------------------------------------------|
+| `{` <br /> ` method: 'POST',` <br />` headers: { 'Content-Type': 'application/json' },` <br /> ` body: JSON.stringify(items)` <br />`}` |
 
 
 ## How to install
