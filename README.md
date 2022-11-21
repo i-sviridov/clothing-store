@@ -20,8 +20,8 @@ Should one not want to create a new account, there is a demo account "TestUser" 
 
 
 On the webpage, the user can use various <b>filters</b> to sort the items by price or category as desired.
+![image](https://github.com/i-sviridov/i-sviridov/blob/7f9b6a4a77e2ea2150f86d42bbba73c981b26640/clothing-store-files/filter.gif)
 
-![image](https://github.com/i-sviridov/i-sviridov/tree/main/clothing-store-files/filter.gif)
 
 The user of an application can add items to the <b>cart</b> or mark them as <b>favorites</b>. Once the item is added to the cart, a new menu is opened, where one can check what is in the cart, adjust the quantity if needed, and place an order. If the user is authenticated, he will be redirected to the profile page; otherwise, the user has to enter his credentials since the <b>profile route is protected</b>.
 
@@ -38,7 +38,7 @@ The application supports the following API routes:
 
 |  /api/auth/signup                                                                                                                          | /api/change-password                                       | /api/add-order                                                                                                             |
 |-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| { <br /> method: 'POST', <br />headers: { 'Content-Type': 'application/json' }, <br /> body: JSON.stringify({username, password}) <br />} | { <br /> method: 'PATCH', <br />headers: { 'Content-Type': 'application/json' }, <br /> body: JSON.stringify({oldPassword, newPassword}) <br />} | { <br /> method: 'POST', <br />headers: { 'Content-Type': 'application/json' }, <br /> body: JSON.stringify(items) <br />} |
+| `{` <br /> ` method: 'POST',` <br />` headers: { 'Content-Type': 'application/json' },` <br /> ` body: JSON.stringify({username, password})` <br />`}` | `{` <br /> ` method: 'PATCH', `<br />` headers: {'Content-Type': 'application/json' }, `<br /> ` body: JSON.stringify({oldPassword, newPassword})` <br />}`` | `{` <br /> ` method: 'POST',` <br />` headers: { 'Content-Type': 'application/json' },` <br /> ` body: JSON.stringify(items)` <br />`}` |
 
 The NextAuth package also supports requests to /api/auth/[...nextAuth] to provide built-in signIn and signOut methods, which are being used in this application.
 
