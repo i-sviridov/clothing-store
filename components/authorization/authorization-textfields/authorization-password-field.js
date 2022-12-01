@@ -1,69 +1,68 @@
-import { useState, useContext } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 
-import { AuthContext } from '../../../context/auth-context';
+import { authActions } from "../../../store/auth/auth-slice";
 
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import LockIcon from '@mui/icons-material/Lock';
-import FormHelperText from '@mui/material/FormHelperText';
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import LockIcon from "@mui/icons-material/Lock";
+import FormHelperText from "@mui/material/FormHelperText";
 
 export default function AuthorizationPasswordField() {
-  const ctx = useContext(AuthContext);
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => {
-    setShowPassword((prevState) => !prevState);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const dispatch = useDispatch();
+  const passwordState = useSelector((state) => state.auth.password);
 
   return (
     <FormControl
-      error={ctx.password.hasError}
+      error={passwordState.hasError}
       fullWidth
       variant="outlined"
       color="secondary"
-      onBlur={ctx.passwordWasTouched}
+      onBlur={() => {
+        dispatch(authActions.passwordWasTouched());
+      }}
     >
       <InputLabel htmlFor="password-text-field">Password</InputLabel>
       <OutlinedInput
         id="password-text-field"
-        type={showPassword ? 'text' : 'password'}
+        type={passwordState.showPassword ? "text" : "password"}
         aria-describedby="password-helper-text"
-        value={ctx.password.value}
-        onChange={ctx.passwordInputHandler}
+        value={passwordState.value}
+        onChange={(event) => {
+          dispatch(authActions.passwordInput(event.target.value));
+        }}
         startAdornment={
           <InputAdornment position="start">
-            <LockIcon color={ctx.password.hasError ? 'error' : 'inherit'} />
+            <LockIcon color={passwordState.hasError ? "error" : "inherit"} />
           </InputAdornment>
         }
         endAdornment={
           <InputAdornment position="end">
             <IconButton
               aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
+              onClick={() => {
+                dispatch(authActions.isPasswordVisible());
+              }}
+              onMouseDown={(event) => {
+                event.preventDefault();
+              }}
               edge="end"
-              color={ctx.password.hasError ? 'error' : 'inherit'}
+              color={passwordState.hasError ? "error" : "inherit"}
             >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
+              {passwordState.showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </InputAdornment>
         }
         label="Password"
       />
       <FormHelperText id="password-helper-text">
-        {ctx.password.hasError
-          ? ctx.password.errorMessage
-          : 'Demo Password: TestPass123'}
+        {passwordState.hasError
+          ? passwordState.errorMessage
+          : "Demo Password: TestPass123"}
       </FormHelperText>
     </FormControl>
   );

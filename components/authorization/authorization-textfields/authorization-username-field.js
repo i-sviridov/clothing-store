@@ -1,17 +1,11 @@
-import { useContext } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-
-import { AuthContext } from "../../../context/auth-context";
+import { authActions } from "../../../store/auth/auth-slice";
 
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import { authActions } from "../../../store/auth/auth-slice";
 
 export default function AuthorizationUsernameField() {
-  const ctx = useContext(AuthContext);
-
   const dispatch = useDispatch();
   const usernameState = useSelector((state) => state.auth.username);
 

@@ -15,6 +15,7 @@ const authSlice = createSlice({
       wasTouched: false,
       hasError: false,
       errorMessage: null,
+      showPassword: false,
     },
     logInMenu: true,
     loading: false,
@@ -39,6 +40,33 @@ const authSlice = createSlice({
         errorMessage:
           isEmpty(state.username.value) && "Username should not be empty",
       };
+    },
+    passwordInput(state, action) {
+      state.password = {
+        value: action.payload,
+        hasError:
+          isNotSevenCharLong(action.payload) && state.password.wasTouched,
+        wasTouched: state.password.wasTouched,
+        errorMessage:
+          isNotSevenCharLong(action.payload) &&
+          state.password.wasTouched &&
+          "Password should be at least 7 characters long",
+        showPassword: state.password.showPassword,
+      };
+    },
+    passwordWasTouched(state) {
+      state.password = {
+        value: state.password.value,
+        hasError: isNotSevenCharLong(state.password.value),
+        wasTouched: true,
+        errorMessage:
+          isNotSevenCharLong(state.password.value) &&
+          "Password should be at least 7 characters long",
+        showPassword: state.password.showPassword,
+      };
+    },
+    isPasswordVisible(state) {
+      state.password.showPassword = !state.password.showPassword;
     },
   },
 });
