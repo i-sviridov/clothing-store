@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import authReducer from './auth-lib/auth-reducer';
-import { isEmpty } from '../lib/helper-functions';
-import { isNotSevenCharLong } from '../lib/helper-functions';
+import authReducer from "./auth-lib/auth-reducer";
+import { isEmpty } from "../lib/helper-functions";
+import { isNotSevenCharLong } from "../lib/helper-functions";
 
 export const AuthContext = React.createContext({
   username: {},
@@ -22,13 +22,13 @@ export const AuthContext = React.createContext({
 
 const defaultAuthState = {
   username: {
-    value: '',
+    value: "",
     wasTouched: false,
     hasError: false,
     errorMessage: null,
   },
   password: {
-    value: '',
+    value: "",
     wasTouched: false,
     hasError: false,
     errorMessage: null,
@@ -46,37 +46,37 @@ export function AuthContextProvider(props) {
 
   function usernameInputHandler(event) {
     dispatchAuthAction({
-      field: 'username',
-      type: 'input-typing',
+      field: "username",
+      type: "input-typing",
       data: event.target.value,
     });
   }
 
   function usernameWasTouched() {
     dispatchAuthAction({
-      field: 'username',
-      type: 'was-touched',
+      field: "username",
+      type: "was-touched",
     });
   }
 
   function passwordInputHandler(event) {
     dispatchAuthAction({
-      field: 'password',
-      type: 'input-typing',
+      field: "password",
+      type: "input-typing",
       data: event.target.value,
     });
   }
 
   function passwordWasTouched() {
     dispatchAuthAction({
-      field: 'password',
-      type: 'was-touched',
+      field: "password",
+      type: "was-touched",
     });
   }
 
   async function formButtonHandler() {
     dispatchAuthAction({
-      type: 'form-button-clicked',
+      type: "form-button-clicked",
     });
 
     if (
@@ -87,50 +87,50 @@ export function AuthContextProvider(props) {
     }
 
     dispatchAuthAction({
-      field: 'loading',
-      type: 'start',
+      field: "loading",
+      type: "start",
     });
 
     const username = authState.username.value;
     const password = authState.password.value;
 
     if (authState.logInMenu) {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         redirect: false,
         username,
         password,
       });
 
-      if (result.error === 'No user found!') {
+      if (result.error === "No user found!") {
         dispatchAuthAction({
-          field: 'error',
-          type: 'no-user-found',
+          field: "error",
+          type: "no-user-found",
           message: result.error,
         });
       }
 
-      if (result.error === 'Incorrect password!') {
+      if (result.error === "Incorrect password!") {
         dispatchAuthAction({
-          field: 'error',
-          type: 'incorrect-password',
+          field: "error",
+          type: "incorrect-password",
           message: result.error,
         });
       }
 
       if (!result.error) {
-        router.replace('/');
+        router.replace("/");
       }
       dispatchAuthAction({
-        field: 'loading',
-        type: 'end',
+        field: "loading",
+        type: "end",
       });
       return;
     } else {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
         body: JSON.stringify({ username, password }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -138,23 +138,23 @@ export function AuthContextProvider(props) {
 
       if (!response.ok) {
         dispatchAuthAction({
-          field: 'error',
+          field: "error",
           type: data.type,
           message: data.message,
         });
       }
 
       if (response.ok) {
-        const result = await signIn('credentials', {
+        const result = await signIn("credentials", {
           redirect: false,
           username,
           password,
         });
-        router.replace('/');
+        router.replace("/");
       }
       dispatchAuthAction({
-        field: 'loading',
-        type: 'end',
+        field: "loading",
+        type: "end",
       });
 
       return data;
@@ -162,7 +162,7 @@ export function AuthContextProvider(props) {
   }
 
   function switchLogInMenu() {
-    dispatchAuthAction({ field: 'switch-menu' });
+    dispatchAuthAction({ field: "switch-menu" });
   }
 
   const context = {

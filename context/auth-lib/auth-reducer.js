@@ -1,9 +1,9 @@
-import { isEmpty } from '../../lib/helper-functions';
-import { isNotSevenCharLong } from '../../lib/helper-functions';
+import { isEmpty } from "../../lib/helper-functions";
+import { isNotSevenCharLong } from "../../lib/helper-functions";
 
 export default function authReducer(state, action) {
-  if (action.field === 'username') {
-    if (action.type === 'input-typing') {
+  if (action.field === "username") {
+    if (action.type === "input-typing") {
       return {
         ...state,
         username: {
@@ -13,11 +13,11 @@ export default function authReducer(state, action) {
           errorMessage:
             isEmpty(action.data) &&
             state.username.wasTouched &&
-            'Username should not be empty',
+            "Username should not be empty",
         },
       };
     }
-    if (action.type === 'was-touched') {
+    if (action.type === "was-touched") {
       return {
         ...state,
         username: {
@@ -25,13 +25,13 @@ export default function authReducer(state, action) {
           hasError: isEmpty(state.username.value),
           wasTouched: true,
           errorMessage:
-            isEmpty(state.username.value) && 'Username should not be empty',
+            isEmpty(state.username.value) && "Username should not be empty",
         },
       };
     }
   }
-  if (action.field === 'password') {
-    if (action.type === 'input-typing') {
+  if (action.field === "password") {
+    if (action.type === "input-typing") {
       return {
         ...state,
         password: {
@@ -42,11 +42,11 @@ export default function authReducer(state, action) {
           errorMessage:
             isNotSevenCharLong(action.data) &&
             state.password.wasTouched &&
-            'Password should be at least 7 characters long',
+            "Password should be at least 7 characters long",
         },
       };
     }
-    if (action.type === 'was-touched') {
+    if (action.type === "was-touched") {
       return {
         ...state,
         password: {
@@ -55,19 +55,19 @@ export default function authReducer(state, action) {
           wasTouched: true,
           errorMessage:
             isNotSevenCharLong(state.password.value) &&
-            'Password should be at least 7 characters long',
+            "Password should be at least 7 characters long",
         },
       };
     }
   }
-  if (action.type === 'form-button-clicked') {
+  if (action.type === "form-button-clicked") {
     return {
       ...state,
       username: {
         value: state.username.value,
-        hasError: state.username.value.trim() === '',
+        hasError: state.username.value.trim() === "",
         errorMessage:
-          isEmpty(state.username.value) && 'Username should not be empty',
+          isEmpty(state.username.value) && "Username should not be empty",
         wasTouched: true,
       },
       password: {
@@ -77,14 +77,14 @@ export default function authReducer(state, action) {
       },
     };
   }
-  if (action.field === 'switch-menu') {
+  if (action.field === "switch-menu") {
     return {
       ...state,
       logInMenu: !state.logInMenu,
     };
   }
-  if (action.field === 'error') {
-    if (action.type === 'user-exists') {
+  if (action.field === "error") {
+    if (action.type === "user-exists") {
       return {
         ...state,
         username: {
@@ -95,7 +95,7 @@ export default function authReducer(state, action) {
         },
       };
     }
-    if (action.type === 'no-user-found') {
+    if (action.type === "no-user-found") {
       return {
         ...state,
         username: {
@@ -106,7 +106,7 @@ export default function authReducer(state, action) {
         },
       };
     }
-    if (action.type === 'incorrect-password') {
+    if (action.type === "incorrect-password") {
       return {
         ...state,
         password: {
@@ -118,8 +118,8 @@ export default function authReducer(state, action) {
       };
     }
   }
-  if (action.field === 'loading') {
-    if (action.type === 'start') {
+  if (action.field === "loading") {
+    if (action.type === "start") {
       return {
         logInMenu: state.logInMenu,
         username: state.username,
@@ -127,7 +127,7 @@ export default function authReducer(state, action) {
         loading: true,
       };
     }
-    if (action.type === 'end') {
+    if (action.type === "end") {
       return {
         logInMenu: state.logInMenu,
         username: state.username,
