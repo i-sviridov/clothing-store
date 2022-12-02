@@ -1,8 +1,8 @@
-import { hashPassword } from '../../../lib/auth';
-import { connectToDatabase } from '../../../lib/auth';
+import { hashPassword } from "../../../lib/auth";
+import { connectToDatabase } from "../../../lib/auth";
 
 export default async function signUpHandler(req, res) {
-  if (req.method !== 'POST') {
+  if (req.method !== "POST") {
     return;
   }
 
@@ -12,7 +12,7 @@ export default async function signUpHandler(req, res) {
 
   if (!username || !password || password.trim().length < 7) {
     res.status(422).json({
-      message: 'Invalid input',
+      message: "Invalid input",
     });
     return;
   }
@@ -22,24 +22,22 @@ export default async function signUpHandler(req, res) {
   const db = client.db();
 
   const existingUser = await db
-    .collection('users')
+    .collection("users")
     .findOne({ username: username });
 
   if (existingUser) {
-    res
-      .status(422)
-      .json({ message: 'User exists already!', type: 'user-exists' });
+    res.status(422).json({ message: "User exists already!" });
     client.close();
     return;
   }
 
   const hashedPassword = await hashPassword(password);
 
-  const result = await db.collection('users').insertOne({
+  const result = await db.collection("users").insertOne({
     username: username,
     password: hashedPassword,
   });
 
-  res.status(201).json({ message: 'Created user!' });
+  res.status(201).json({ message: "Created user!" });
   client.close();
 }

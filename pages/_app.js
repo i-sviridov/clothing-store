@@ -9,7 +9,6 @@ import createEmotionCache from "../components/createEmotionCache";
 import { FavoritesContextProvider } from "../context/favorites-context";
 import "../styles.css";
 import Navigation from "../components/navigation/navigation";
-import { AuthContextProvider } from "../context/auth-context";
 import { CartContextProvider } from "../context/cart-context";
 import { SessionProvider } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,25 +41,23 @@ export default function MyApp(props) {
         <CssBaseline />
         <SessionProvider session={session}>
           <CartContextProvider>
-            <AuthContextProvider>
-              <FavoritesContextProvider>
-                <Navigation />
-                <Provider store={store}>
-                  <AnimatePresence>
-                    <motion.main
-                      key={router.pathname}
-                      initial="hidden"
-                      animate="enter"
-                      exit="exit"
-                      variants={variants}
-                      transition={{ type: "linear" }}
-                    >
-                      <Component {...pageProps} />
-                    </motion.main>
-                  </AnimatePresence>
-                </Provider>
-              </FavoritesContextProvider>
-            </AuthContextProvider>
+            <FavoritesContextProvider>
+              <Navigation />
+              <Provider store={store}>
+                <AnimatePresence>
+                  <motion.main
+                    key={router.pathname}
+                    initial="hidden"
+                    animate="enter"
+                    exit="exit"
+                    variants={variants}
+                    transition={{ type: "linear" }}
+                  >
+                    <Component {...pageProps} />
+                  </motion.main>
+                </AnimatePresence>
+              </Provider>
+            </FavoritesContextProvider>
           </CartContextProvider>
         </SessionProvider>
       </ThemeProvider>
