@@ -1,26 +1,27 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import MoreIcon from '@mui/icons-material/MoreVert';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import MoreIcon from "@mui/icons-material/MoreVert";
 
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
-import Link from '../Link';
-import { FavoritesContext } from '../../context/favorites-context';
-import { CartContext } from '../../context/cart-context';
-import { useState, useEffect, useContext } from 'react';
-import CartComponent from '../cart/cart';
+import Link from "../Link";
+import { FavoritesContext } from "../../context/favorites-context";
+import { useState, useEffect, useContext } from "react";
+import CartComponent from "../cart/cart";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { cartActions } from "../../store/cart/cart-slice";
 
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,14 +29,16 @@ export default function Navigation() {
   const session = useSession();
   const { status } = session;
 
+  const cartStore = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
   const router = useRouter();
 
   const favCtx = useContext(FavoritesContext);
-  const cartCtx = useContext(CartContext);
 
-  if (typeof window !== 'undefined') {
-    const items = document.cookie.split('; ').map((item) => item.split('=')[0]);
-    const amount = document.cookie.split('; ').length;
+  if (typeof window !== "undefined") {
+    const items = document.cookie.split("; ").map((item) => item.split("=")[0]);
+    const amount = document.cookie.split("; ").length;
 
     useEffect(() => {
       if (document.cookie.length > 0) {
@@ -51,47 +54,42 @@ export default function Navigation() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMenuOpen}
       onClose={handleMobileMenuOpen}
     ></Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -108,6 +106,7 @@ export default function Navigation() {
         >
           <Badge badgeContent={favCtx.amount} color="error">
             <FavoriteIcon />
+            art
           </Badge>
         </IconButton>
         <p>Favorites</p>
@@ -115,7 +114,7 @@ export default function Navigation() {
 
       <MenuItem
         onClick={() => {
-          cartCtx.openCartHandler();
+          dispatch(cartActions.openCart());
           handleMobileMenuClose();
         }}
       >
@@ -124,7 +123,7 @@ export default function Navigation() {
           aria-label="show favorite products"
           color="inherit"
         >
-          <Badge badgeContent={cartCtx.items.length} color="error">
+          <Badge badgeContent={cartStore.items.length} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
@@ -153,7 +152,7 @@ export default function Navigation() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }} component="navigation">
-        {cartCtx.isOpen && <CartComponent />}
+        {cartStore.isOpen && <CartComponent />}
         <AppBar position="fixed">
           <Toolbar>
             <Box component={Link} href="/">
@@ -170,7 +169,7 @@ export default function Navigation() {
             </Box>
 
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
                 size="large"
                 aria-label="show favorite products"
@@ -190,14 +189,16 @@ export default function Navigation() {
                 aria-haspopup="true"
                 color="inherit"
                 onClick={
-                  status === 'authenticated'
-                    ? cartCtx.openCartHandler
+                  status === "authenticated"
+                    ? () => {
+                        dispatch(cartActions.openCart());
+                      }
                     : () => {
-                        router.push('/auth');
+                        router.push("/auth");
                       }
                 }
               >
-                <Badge badgeContent={cartCtx.items.length} color="error">
+                <Badge badgeContent={cartStore.items.length} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
@@ -214,7 +215,7 @@ export default function Navigation() {
                 <AccountCircle />
               </IconButton>
             </Box>
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
                 aria-label="show more"

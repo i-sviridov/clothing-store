@@ -9,7 +9,6 @@ import createEmotionCache from "../components/createEmotionCache";
 import { FavoritesContextProvider } from "../context/favorites-context";
 import "../styles.css";
 import Navigation from "../components/navigation/navigation";
-import { CartContextProvider } from "../context/cart-context";
 import { SessionProvider } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Provider } from "react-redux";
@@ -40,25 +39,23 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SessionProvider session={session}>
-          <CartContextProvider>
-            <FavoritesContextProvider>
+          <FavoritesContextProvider>
+            <Provider store={store}>
               <Navigation />
-              <Provider store={store}>
-                <AnimatePresence>
-                  <motion.main
-                    key={router.pathname}
-                    initial="hidden"
-                    animate="enter"
-                    exit="exit"
-                    variants={variants}
-                    transition={{ type: "linear" }}
-                  >
-                    <Component {...pageProps} />
-                  </motion.main>
-                </AnimatePresence>
-              </Provider>
-            </FavoritesContextProvider>
-          </CartContextProvider>
+              <AnimatePresence>
+                <motion.main
+                  key={router.pathname}
+                  initial="hidden"
+                  animate="enter"
+                  exit="exit"
+                  variants={variants}
+                  transition={{ type: "linear" }}
+                >
+                  <Component {...pageProps} />
+                </motion.main>
+              </AnimatePresence>
+            </Provider>
+          </FavoritesContextProvider>
         </SessionProvider>
       </ThemeProvider>
     </CacheProvider>

@@ -1,31 +1,33 @@
-import classes from './single-product.module.css';
+import classes from "./single-product.module.css";
 
-import { useState, useContext, useReducer, useEffect } from 'react';
-import { FavoritesContext } from '../../context/favorites-context';
-import { CartContext } from '../../context/cart-context';
-import Link from 'next/link';
-import Button from '@mui/material/Button';
+import { useState, useContext, useReducer, useEffect } from "react";
+import { FavoritesContext } from "../../context/favorites-context";
+import Link from "next/link";
+import Button from "@mui/material/Button";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../store/cart/cart-slice";
 
 const ProductionVariants = {
   initial: { y: 150 },
   animate: {
     y: 0,
-    transition: { type: 'spring', bounce: 0.4, duration: 2 },
+    transition: { type: "spring", bounce: 0.4, duration: 2 },
   },
 };
 
 const MotionProps = {
-  initial: 'initial',
-  whileInView: 'animate',
+  initial: "initial",
+  whileInView: "animate",
   viewport: { once: true },
   variants: ProductionVariants,
 };
 
 export default function singleProduct(props) {
   const favCtx = useContext(FavoritesContext);
-  const cartCtx = useContext(CartContext);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (props.isFavorite) {
@@ -41,21 +43,21 @@ export default function singleProduct(props) {
   };
 
   function productOptionsReducer(state, action) {
-    if (action.type === 'COLOR') {
+    if (action.type === "COLOR") {
       return {
         ...state,
         color: action.color,
       };
     }
 
-    if (action.type === 'SIZE') {
+    if (action.type === "SIZE") {
       return {
         ...state,
         size: action.size,
       };
     }
 
-    if (action.type === 'DECREASE_AMOUNT') {
+    if (action.type === "DECREASE_AMOUNT") {
       if (state.selectedAmount === 1) {
         return state;
       }
@@ -66,7 +68,7 @@ export default function singleProduct(props) {
       };
     }
 
-    if (action.type === 'INCREASE_AMOUNT') {
+    if (action.type === "INCREASE_AMOUNT") {
       if (state.selectedAmount >= 10) {
         return state;
       }
@@ -77,7 +79,7 @@ export default function singleProduct(props) {
       };
     }
 
-    if (action.type === 'ADD_TO_CART') {
+    if (action.type === "ADD_TO_CART") {
       return defaultProductOptions;
     }
 
@@ -105,11 +107,11 @@ export default function singleProduct(props) {
   }
 
   function colorOptionPickHandler(color) {
-    dispatchOptionsAction({ type: 'COLOR', color });
+    dispatchOptionsAction({ type: "COLOR", color });
   }
 
   function sizeOptionPickHandler(event) {
-    dispatchOptionsAction({ type: 'SIZE', size: event.target.value });
+    dispatchOptionsAction({ type: "SIZE", size: event.target.value });
   }
 
   function changeAmountHandler(type) {
@@ -118,20 +120,20 @@ export default function singleProduct(props) {
 
   return (
     <motion.div {...MotionProps}>
-      <h1 className={classes['product-title']}>{props.data.title}</h1>
-      <div className={classes['product-container']}>
-        <img src={props.data.imageUrl} className={classes['product-image']} />
-        <p className={classes['product-description']}>
+      <h1 className={classes["product-title"]}>{props.data.title}</h1>
+      <div className={classes["product-container"]}>
+        <img src={props.data.imageUrl} className={classes["product-image"]} />
+        <p className={classes["product-description"]}>
           {props.data.description}
         </p>
 
-        <div className={classes['product-color']}>
+        <div className={classes["product-color"]}>
           <p>Color</p>
           <div className={classes[`product-color-items`]}>
             {props.data.colors.map((color) => (
               <div
-                className={`${classes['product-color-item']} ${
-                  color === productOptions.color ? classes['active'] : ''
+                className={`${classes["product-color-item"]} ${
+                  color === productOptions.color ? classes["active"] : ""
                 }`}
                 style={{ backgroundColor: color }}
                 key={color}
@@ -141,11 +143,11 @@ export default function singleProduct(props) {
           </div>
         </div>
 
-        <div className={classes['product-sizes']}>
+        <div className={classes["product-sizes"]}>
           <p>Sizes</p>
           <select
             id="sizes"
-            className={classes['product-select']}
+            className={classes["product-select"]}
             onClick={sizeOptionPickHandler}
           >
             {props.data.sizes.map((size) => {
@@ -157,50 +159,66 @@ export default function singleProduct(props) {
             })}
           </select>
         </div>
-        <div className={classes['product-cart']}>
-          <p className={classes['product-price']}>
-            {productOptions.totalPrice + '.00$'}
+        <div className={classes["product-cart"]}>
+          <p className={classes["product-price"]}>
+            {productOptions.totalPrice + ".00$"}
           </p>
-          <div className={classes['product-amount']}>
-            <button onClick={changeAmountHandler.bind(null, 'DECREASE_AMOUNT')}>
+          <div className={classes["product-amount"]}>
+            <button onClick={changeAmountHandler.bind(null, "DECREASE_AMOUNT")}>
               -
             </button>
             <p>{productOptions.selectedAmount}</p>
-            <button onClick={changeAmountHandler.bind(null, 'INCREASE_AMOUNT')}>
+            <button onClick={changeAmountHandler.bind(null, "INCREASE_AMOUNT")}>
               +
             </button>
           </div>
         </div>
-        <div className={classes['product-buttons']}>
+        <div className={classes["product-buttons"]}>
           <Button
             variant="contained"
             color="secondary"
-            sx={{ mx: 4, mt: 2, width: '12rem' }}
-            onClick={cartCtx.addToCartHandler.bind(
-              null,
-              props.data._id,
-              props.data.title,
-              props.data.imageUrl,
-              productOptions.color,
-              productOptions.size,
-              props.data.price,
-              productOptions.selectedAmount,
-              productOptions.totalPrice
-            )}
+            sx={{ mx: 4, mt: 2, width: "12rem" }}
+            onClick={
+              () => {
+                dispatch(
+                  cartActions.addItemToCart({
+                    id: props.data._id,
+                    title: props.data.title,
+                    imageUrl: props.data.imageUrl,
+                    color: productOptions.color,
+                    size: productOptions.size,
+                    initialPrice: props.data.price,
+                    amountItems: productOptions.selectedAmount,
+                    totalSum: productOptions.totalPrice,
+                  })
+                );
+              }
+              // cartCtx.addToCartHandler.bind(
+              // null,
+              // props.data._id,
+              // props.data.title,
+              // props.data.imageUrl,
+              // productOptions.color,
+              // productOptions.size,
+              // props.data.price,
+              // productOptions.selectedAmount,
+              // productOptions.totalPrice
+              // //
+            }
           >
             Add to cart
           </Button>
           <Button
             variant="contained"
             color="secondary"
-            sx={{ mx: 4, mt: 2, width: '12rem' }}
+            sx={{ mx: 4, mt: 2, width: "12rem" }}
             onClick={favoritesHandler}
           >
-            {isFavorite ? 'Unmark as favorite' : 'Mark as favorite'}
+            {isFavorite ? "Unmark as favorite" : "Mark as favorite"}
           </Button>
           <Link href="/">
             <Button
-              sx={{ mx: 4, mt: 2, width: '12rem' }}
+              sx={{ mx: 4, mt: 2, width: "12rem" }}
               variant="contained"
               color="secondary"
             >

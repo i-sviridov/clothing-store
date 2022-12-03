@@ -1,25 +1,41 @@
-import classes from './cart-item.module.css';
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../../store/cart/cart-slice";
 
-import DeleteIcon from '@mui/icons-material/Delete';
+import classes from "./cart-item.module.css";
 
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import DeleteIcon from "@mui/icons-material/Delete";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 export default function CartItem(props) {
-  function itemChangeHandler(event) {
-    props.onAmountChange(props.id, props.color, props.size, event.target.value);
-  }
+  const dispatch = useDispatch();
 
-  function deleteItemHandler() {
-    props.onDeleteClick(props.id, props.color, props.size);
+  function itemChangeHandler(event) {
+    if (event.target.value < 1) {
+      dispatch(
+        cartActions.deleteItemFromCart({
+          id: props.id,
+          color: props.color,
+          size: props.size,
+        })
+      );
+      return;
+    }
+
+    let newAmount = event.target.value;
+    if (event.target.value > 10) {
+      newAmount = 10;
+    }
+
+    dispatch(cartActions.setNewItemCartAmount({ id: props.id, newAmount }));
   }
 
   return (
     <Grid container sx={{ mt: 5 }}>
       <Grid container item justifyContent="center" xs={12} md={5}>
         <img
-          className={classes['cart-image']}
+          className={classes["cart-image"]}
           src={props.imageSrc}
           alt={props.title}
         />
@@ -36,7 +52,7 @@ export default function CartItem(props) {
         rowSpacing={3}
       >
         <Grid item>
-          <Typography sx={{ textTransform: 'uppercase' }}>
+          <Typography sx={{ textTransform: "uppercase" }}>
             {props.title}
           </Typography>
         </Grid>
@@ -49,7 +65,7 @@ export default function CartItem(props) {
             container
             item
             xs={3}
-            sx={{ height: '3rem' }}
+            sx={{ height: "3rem" }}
             justifyContent="center"
           >
             <TextField
@@ -62,7 +78,7 @@ export default function CartItem(props) {
               variant="standard"
               color="secondary"
               defaultValue={props.quantity}
-              sx={{ width: '3.5rem' }}
+              sx={{ width: "3.5rem" }}
               InputProps={{
                 inputProps: {
                   min: 0,
@@ -78,7 +94,7 @@ export default function CartItem(props) {
             container
             xs={3}
             md={2}
-            sx={{ height: '3rem' }}
+            sx={{ height: "3rem" }}
             justifyContent="center"
             alignItems="center"
           >
@@ -89,12 +105,12 @@ export default function CartItem(props) {
             container
             xs={3}
             md={3}
-            sx={{ height: '3rem' }}
+            sx={{ height: "3rem" }}
             justifyContent="center"
             alignItems="center"
           >
             <div
-              className={classes['cart-color']}
+              className={classes["cart-color"]}
               style={{ backgroundColor: props.color }}
             ></div>
           </Grid>
@@ -103,10 +119,18 @@ export default function CartItem(props) {
             container
             xs={3}
             md={2}
-            sx={{ height: '3rem' }}
+            sx={{ height: "3rem" }}
             justifyContent="center"
             alignItems="center"
-            onClick={deleteItemHandler}
+            onClick={() => {
+              dispatch(
+                cartActions.deleteItemFromCart({
+                  id: props.id,
+                  color: props.color,
+                  size: props.size,
+                })
+              );
+            }}
           >
             <DeleteIcon />
           </Grid>
