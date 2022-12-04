@@ -1,13 +1,14 @@
 import classes from "./single-product.module.css";
 
-import { useState, useContext, useReducer, useEffect } from "react";
-import { FavoritesContext } from "../../context/favorites-context";
+import { useState, useReducer, useEffect } from "react";
+
 import Link from "next/link";
 import Button from "@mui/material/Button";
 
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../store/cart/cart-slice";
+import { favoritesActions } from "../../store/favorites/favorites-slice";
 
 const ProductionVariants = {
   initial: { y: 150 },
@@ -25,23 +26,10 @@ const MotionProps = {
 };
 
 export default function singleProduct(props) {
-  const favCtx = useContext(FavoritesContext);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (props.isFavorite) {
-      favCtx.addItem(props.data._id);
-    }
-  }, [props.isFavorite]);
-
-  const defaultProductOptions = {
-    color: props.data.colors[0],
-    size: props.data.sizes[0],
-    totalPrice: +props.data.price,
-    selectedAmount: 1,
-  };
-
+  const favoritesState = useSelector((state) => state.favorites);
+  const [isFavorite, setIsFavorite] = useState(
+    favoritesState.items.includes(props.data._id)
+  );
   function productOptionsReducer(state, action) {
     if (action.type === "COLOR") {
       return {
@@ -86,22 +74,36 @@ export default function singleProduct(props) {
     return defaultProductOptions;
   }
 
+  const defaultProductOptions = {
+    color: props.data.colors[0],
+    size: props.data.sizes[0],
+    totalPrice: +props.data.price,
+    selectedAmount: 1,
+  };
+
   const [productOptions, dispatchOptionsAction] = useReducer(
     productOptionsReducer,
     defaultProductOptions
   );
 
-  const [isFavorite, setIsFavorite] = useState(
-    favCtx.items.includes(props.data._id)
-  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (props.isFavorite) {
+      dispatch(favoritesActions.addItemToFavorites(props.data._id));
+    }
+  }, [props.isFavorite]);
 
   function favoritesHandler() {
     if (!isFavorite) {
-      favCtx.addItem(props.data._id);
+      document.cookie = `${props.data._id}=${props.data._id}`;
+      dispatch(favoritesActions.addItemToFavorites(props.data._id));
       setIsFavorite(true);
     }
     if (isFavorite) {
-      favCtx.deleteItem(props.data._id);
+      document.cookie =
+        `${props.data._id}=;expires=` + new Date(0).toUTCString();
+      dispatch(favoritesActions.deleteItemFromFavorites(props.data._id));
       setIsFavorite(false);
     }
   }
@@ -178,33 +180,20 @@ export default function singleProduct(props) {
             variant="contained"
             color="secondary"
             sx={{ mx: 4, mt: 2, width: "12rem" }}
-            onClick={
-              () => {
-                dispatch(
-                  cartActions.addItemToCart({
-                    id: props.data._id,
-                    title: props.data.title,
-                    imageUrl: props.data.imageUrl,
-                    color: productOptions.color,
-                    size: productOptions.size,
-                    initialPrice: props.data.price,
-                    amountItems: productOptions.selectedAmount,
-                    totalSum: productOptions.totalPrice,
-                  })
-                );
-              }
-              // cartCtx.addToCartHandler.bind(
-              // null,
-              // props.data._id,
-              // props.data.title,
-              // props.data.imageUrl,
-              // productOptions.color,
-              // productOptions.size,
-              // props.data.price,
-              // productOptions.selectedAmount,
-              // productOptions.totalPrice
-              // //
-            }
+            onClick={() => {
+              dispatch(
+                cartActions.addItemToCart({
+                  id: props.data._id,
+                  title: props.data.title,
+                  imageUrl: props.data.imageUrl,
+                  color: productOptions.color,
+                  size: productOptions.size,
+                  initialPrice: props.data.price,
+                  amountItems: productOptions.selectedAmount,
+                  totalSum: productOptions.totalPrice,
+                })
+              );
+            }}
           >
             Add to cart
           </Button>

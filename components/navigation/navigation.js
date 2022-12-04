@@ -15,13 +15,14 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 import Link from "../Link";
-import { FavoritesContext } from "../../context/favorites-context";
-import { useState, useEffect, useContext } from "react";
+
+import { useState, useEffect } from "react";
 import CartComponent from "../cart/cart";
 
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../store/cart/cart-slice";
+import { favoritesActions } from "../../store/favorites/favorites-slice";
 
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,12 +30,10 @@ export default function Navigation() {
   const session = useSession();
   const { status } = session;
 
-  const cartStore = useSelector((state) => state.cart);
+  const store = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const router = useRouter();
-
-  const favCtx = useContext(FavoritesContext);
 
   if (typeof window !== "undefined") {
     const items = document.cookie.split("; ").map((item) => item.split("=")[0]);
@@ -42,7 +41,12 @@ export default function Navigation() {
 
     useEffect(() => {
       if (document.cookie.length > 0) {
-        favCtx.fetchCookiesData(items, amount);
+        dispatch(
+          favoritesActions.updateInitialStateViaFetchingCookies({
+            items,
+            amount,
+          })
+        );
       }
     }, [document.cookie]);
   }
@@ -104,9 +108,8 @@ export default function Navigation() {
           aria-label="show favorite products"
           color="inherit"
         >
-          <Badge badgeContent={favCtx.amount} color="error">
+          <Badge badgeContent={store.favorites.amount} color="error">
             <FavoriteIcon />
-            art
           </Badge>
         </IconButton>
         <p>Favorites</p>
@@ -123,7 +126,7 @@ export default function Navigation() {
           aria-label="show favorite products"
           color="inherit"
         >
-          <Badge badgeContent={cartStore.items.length} color="error">
+          <Badge badgeContent={store.cart.items.length} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
@@ -152,7 +155,7 @@ export default function Navigation() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }} component="navigation">
-        {cartStore.isOpen && <CartComponent />}
+        {store.cart.isOpen && <CartComponent />}
         <AppBar position="fixed">
           <Toolbar>
             <Box component={Link} href="/">
@@ -177,7 +180,7 @@ export default function Navigation() {
                 component={Link}
                 href="/favorites"
               >
-                <Badge badgeContent={favCtx.amount} color="error">
+                <Badge badgeContent={store.favorites.amount} color="error">
                   <FavoriteIcon />
                 </Badge>
               </IconButton>
@@ -198,7 +201,7 @@ export default function Navigation() {
                       }
                 }
               >
-                <Badge badgeContent={cartStore.items.length} color="error">
+                <Badge badgeContent={store.cart.items.length} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>

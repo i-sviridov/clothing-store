@@ -6,7 +6,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
 import theme from "../components/theme";
 import createEmotionCache from "../components/createEmotionCache";
-import { FavoritesContextProvider } from "../context/favorites-context";
 import "../styles.css";
 import Navigation from "../components/navigation/navigation";
 import { SessionProvider } from "next-auth/react";
@@ -39,23 +38,21 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SessionProvider session={session}>
-          <FavoritesContextProvider>
-            <Provider store={store}>
-              <Navigation />
-              <AnimatePresence>
-                <motion.main
-                  key={router.pathname}
-                  initial="hidden"
-                  animate="enter"
-                  exit="exit"
-                  variants={variants}
-                  transition={{ type: "linear" }}
-                >
-                  <Component {...pageProps} />
-                </motion.main>
-              </AnimatePresence>
-            </Provider>
-          </FavoritesContextProvider>
+          <Provider store={store}>
+            <Navigation />
+            <AnimatePresence>
+              <motion.main
+                key={router.pathname}
+                initial="hidden"
+                animate="enter"
+                exit="exit"
+                variants={variants}
+                transition={{ type: "linear" }}
+              >
+                <Component {...pageProps} />
+              </motion.main>
+            </AnimatePresence>
+          </Provider>
         </SessionProvider>
       </ThemeProvider>
     </CacheProvider>
