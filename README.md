@@ -2,7 +2,7 @@
 
 * This is a full-stack app for a small online clothing store with authentication.
 * Website: [https://clothing-store-mu.vercel.app/](https://clothing-store-mu.vercel.app/)
-* Stack: React, Next.js, Material UI,  HTML, CSS, Framer Motion, Node.js, MongoDB, NextAuth, bryptjs
+* Stack: React, Redux, Next.js, Material UI,  HTML, CSS, Framer Motion, Node.js, MongoDB, NextAuth, bryptjs
 
 
 ![image](https://github.com/i-sviridov/i-sviridov/blob/6c54b3314a4fa3786a04c4f91a6940f36475ee60/clothing-store-files/first-load.gif)
