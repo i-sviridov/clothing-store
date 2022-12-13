@@ -1,13 +1,13 @@
-import { useContext } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../store/auth/auth-slice";
 
-import { AuthContext } from '../../../context/auth-context';
-
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function AuthorizationUsernameField() {
-  const ctx = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const usernameState = useSelector((state) => state.auth.username);
 
   return (
     <TextField
@@ -15,25 +15,29 @@ export default function AuthorizationUsernameField() {
       label="Username"
       variant="outlined"
       fullWidth
-      error={ctx.username.hasError}
+      error={usernameState.hasError}
       color="secondary"
       sx={{ my: 2 }}
-      value={ctx.username.value}
-      onBlur={ctx.usernameWasTouched}
-      onChange={ctx.usernameInputHandler}
+      value={usernameState.value}
+      onBlur={() => {
+        dispatch(authActions.usernameWasTouched());
+      }}
+      onChange={(event) => {
+        dispatch(authActions.usernameInput(event.target.value));
+      }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
             <AccountCircle
-              color={ctx.username.hasError ? 'error' : 'inherit'}
+              color={usernameState.hasError ? "error" : "inherit"}
             />
           </InputAdornment>
         ),
       }}
       helperText={
-        ctx.username.hasError
-          ? ctx.username.errorMessage
-          : 'Demo Username: TestUser'
+        usernameState.hasError
+          ? usernameState.errorMessage
+          : "Demo Username: TestUser"
       }
     />
   );

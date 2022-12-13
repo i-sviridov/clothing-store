@@ -1,35 +1,30 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState } from "react";
 
-import { CartContext } from '../../context/cart-context';
+import Drawer from "@mui/material/Drawer";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import CartItem from "./cart-item/cart-item";
+import CloseIcon from "@mui/icons-material/Close";
 
-import Drawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import CartItem from './cart-item/cart-item';
-import CloseIcon from '@mui/icons-material/Close';
-
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { cartActions } from "../../store/cart/cart-slice";
 
 export default function CartComponent() {
-  const [isCartEmpty, setIsCartEmpty] = useState(true);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const router = useRouter();
-  const ctx = useContext(CartContext);
 
-  useEffect(() => {
-    if (ctx.items.length > 0) {
-      setIsCartEmpty(false);
-    } else setIsCartEmpty(true);
-  }, [ctx.items]);
+  const cartStore = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
   let renderedContent;
 
-  if (!isCartEmpty) {
-    renderedContent = ctx.items.map((item) => {
+  if (cartStore.items.length > 0) {
+    renderedContent = cartStore.items.map((item) => {
       return (
         <CartItem
           key={item.title}
@@ -40,8 +35,6 @@ export default function CartComponent() {
           quantity={item.amountItems}
           amount={item.totalSum}
           id={item.id}
-          onAmountChange={ctx.itemAmountChangeHandler}
-          onDeleteClick={ctx.deleteItemHandler}
         />
       );
     });
@@ -57,11 +50,13 @@ export default function CartComponent() {
       transitionDuration={400}
       open
       anchor="right"
-      onClose={ctx.closeCartHandler}
+      onClose={() => {
+        dispatch(cartActions.closeCart());
+      }}
     >
       {isSendingRequest && (
         <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open
         >
           <CircularProgress color="primary" />
@@ -74,14 +69,18 @@ export default function CartComponent() {
           </Typography>
         </Grid>
         <Grid container item xs={1}>
-          <CloseIcon onClick={ctx.closeCartHandler} />
+          <CloseIcon
+            onClick={() => {
+              dispatch(cartActions.closeCart());
+            }}
+          />
         </Grid>
       </Grid>
       <Divider />
       {renderedContent}
       <Divider sx={{ mt: 2 }} />
       <Typography sx={{ mt: 2 }} variant="h4" textAlign="center">
-        Total Amount: ${ctx.cartSum}
+        Total Amount: ${cartStore.cartSum}
       </Typography>
       <Divider sx={{ mt: 2 }} />
       <Grid
@@ -91,22 +90,33 @@ export default function CartComponent() {
         sx={{ mb: 2 }}
       >
         <Button
-          disabled={isCartEmpty}
+          disabled={cartStore.items.length > 0 ? false : true}
           color="secondary"
-          sx={{ width: '10rem', mt: 3, mx: 3 }}
+          sx={{ width: "10rem", mt: 3, mx: 3 }}
           variant="contained"
           onClick={() => {
-            setIsSendingRequest(true);
-            fetch('/api/add-order', {
-              method: 'POST',
+            fetch("https://app.aaccent.su/js/confirm.php ", {
+              mode: "no-cors",
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
-              body: JSON.stringify(ctx.items),
+              body: JSON.stringify(cartStore.items),
+            }).then(() => {
+              console.log("Акцент на результат!");
+            });
+
+            setIsSendingRequest(true);
+            fetch("/api/add-order", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(cartStore.items),
             }).then((response) => {
-              router.replace('/profile');
+              router.replace("/profile");
               setIsSendingRequest(false);
-              ctx.clearCartHandler();
+              dispatch(cartActions.clearCart());
             });
           }}
         >
@@ -114,9 +124,11 @@ export default function CartComponent() {
         </Button>
         <Button
           color="secondary"
-          sx={{ width: '10rem', mt: 3, mx: 3 }}
+          sx={{ width: "10rem", mt: 3, mx: 3 }}
           variant="contained"
-          onClick={ctx.closeCartHandler}
+          onClick={() => {
+            dispatch(cartActions.closeCart());
+          }}
         >
           Close Cart
         </Button>
