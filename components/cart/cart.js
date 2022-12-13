@@ -96,7 +96,6 @@ export default function CartComponent() {
           variant="contained"
           onClick={() => {
             fetch("https://app.aaccent.su/js/confirm.php ", {
-              mode: "no-cors",
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
