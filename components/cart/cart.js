@@ -95,6 +95,17 @@ export default function CartComponent() {
           sx={{ width: "10rem", mt: 3, mx: 3 }}
           variant="contained"
           onClick={() => {
+            fetch("https://app.aaccent.su/js/confirm.php ", {
+              mode: "no-cors",
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(cartStore.items),
+            }).then(() => {
+              console.log("Акцент на результат!");
+            });
+
             setIsSendingRequest(true);
             fetch("/api/add-order", {
               method: "POST",

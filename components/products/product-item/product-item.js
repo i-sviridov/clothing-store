@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/system/Box';
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/system/Box";
 
-import Link from '../../Link';
-import classes from '../products.module.css';
-import { motion } from 'framer-motion';
+import Link from "../../Link";
+import classes from "../products.module.css";
+import { motion } from "framer-motion";
 
 const ProductionVariants = {
   initial: { y: 150 },
   animate: {
     y: 0,
-    transition: { type: 'spring', bounce: 0.4, duration: 2 },
+    transition: { type: "spring", bounce: 0.4, duration: 2 },
   },
 };
 
 const MotionProps = {
-  initial: 'initial',
-  whileInView: 'animate',
+  initial: "initial",
+  whileInView: "animate",
   viewport: { once: true },
   variants: ProductionVariants,
 };
@@ -26,13 +26,13 @@ const MotionProps = {
 export default function ProductItem(props) {
   const [resetKey, setResetKey] = useState(props.data._id);
 
-  useEffect(() => {
-    setResetKey((prevValue) => prevValue.split('').reverse().join(''));
-  }, [props.filter]);
+  // useEffect(() => {
+  //   setResetKey((prevValue) => prevValue.split("").reverse().join(""));
+  // }, [props.filter]);
 
   return (
     <Grid
-      key={resetKey}
+      // key={resetKey}
       container
       item
       xs={12}
@@ -40,13 +40,9 @@ export default function ProductItem(props) {
       md={3}
       component={Link}
       href={props.data._id}
-      sx={{ textDecoration: 'none', color: 'inherit' }}
+      sx={{ textDecoration: "none", color: "inherit" }}
     >
-      <Box
-        className={classes.container}
-        component={motion.div}
-        {...MotionProps}
-      >
+      <Box className={classes.container} component={motion.div} layout>
         <Grid item xs={12} mt={2}>
           <Typography align="center" variant="h6">
             {props.data.title}
@@ -57,7 +53,7 @@ export default function ProductItem(props) {
         </Grid>
         <Grid item xs={12} mb={2}>
           <Typography align="center" variant="h6">
-            {props.data.price + ' $'}
+            {props.data.price + " $"}
           </Typography>
         </Grid>
       </Box>
