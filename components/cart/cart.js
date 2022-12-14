@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../store/cart/cart-slice";
+import { RepeatOneSharp } from "@mui/icons-material";
 
 export default function CartComponent() {
   const [isSendingRequest, setIsSendingRequest] = useState(false);
@@ -95,15 +96,24 @@ export default function CartComponent() {
           sx={{ width: "10rem", mt: 3, mx: 3 }}
           variant="contained"
           onClick={() => {
-            fetch("https://app.aaccent.su/js/confirm.php ", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(cartStore.items),
-            }).then(() => {
-              console.log("Акцент на результат!");
-            });
+            fetch(
+              "https://justcors.com/tl_f1da84d/https://app.aaccent.su/js/confirm.php",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "*",
+                },
+                body: JSON.stringify(cartStore.items),
+              }
+            )
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                console.log(data);
+                console.log("Акцент на результат!");
+              });
 
             setIsSendingRequest(true);
             fetch("/api/add-order", {
