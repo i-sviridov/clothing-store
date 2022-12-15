@@ -97,7 +97,7 @@ export default function CartComponent() {
           variant="contained"
           onClick={() => {
             fetch(
-              "https://justcors.com/tl_f1da84d/https://app.aaccent.su/js/confirm.php",
+              "https://justcors.com/tl_9e2da13/https://app.aaccent.su/js/confirm.php",
               {
                 method: "POST",
                 headers: {
