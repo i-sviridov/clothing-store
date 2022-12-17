@@ -96,25 +96,6 @@ export default function CartComponent() {
           sx={{ width: "10rem", mt: 3, mx: 3 }}
           variant="contained"
           onClick={() => {
-            fetch(
-              "https://justcors.com/tl_05acb7a/https://app.aaccent.su/js/confirm.php",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "*",
-                },
-                body: JSON.stringify(cartStore.items),
-              }
-            )
-              .then((response) => {
-                return response.json();
-              })
-              .then((data) => {
-                console.log(data);
-                console.log("Акцент на результат!");
-              });
-
             setIsSendingRequest(true);
             fetch("/api/add-order", {
               method: "POST",
